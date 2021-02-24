@@ -8,11 +8,6 @@
     <script type="text/javascript" src="compare.js"></script>
     <script type="text/javascript">
         map_view('#map-view-container');
-        // Example data
-        var data = [
-            { "meta": {"artwork_name": "70 amx", "artist_full_name": "xynphix", "creation_year": 2007}, "image_url": "https://img00.deviantart.net/839b/i/2015/127/9/a/70_amx_by_xynphix-dyxa31.jpg" },
-            { "meta": {"artwork_name": "crucifixion (detail)", "artist_full_name": "andrea da firenze", "creation_year": 1366}, "image_url": "http://www.wga.hu/art/a/andrea/firenze/spanish/1north3.jpg" }
-        ];
-        compare_view(data, "#compare-view-container");
+        compare_view('/data', "#compare-view-container");
     </script>
 </main>

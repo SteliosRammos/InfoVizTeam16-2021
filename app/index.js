@@ -9,12 +9,33 @@ app.engine('hbs', handlebars({
     extname: 'hbs'
 }));
 
+const JsonDB = require('node-json-db').JsonDB;
+const Config = require('node-json-db/dist/lib/JsonDBConfig').Config;
+const db = new JsonDB(new Config('../data/example.json'));
+
+// Serve boostrap css and public files (D3 code, map data)
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use(express.static(__dirname + '/d3'));
 app.use(express.static(__dirname + '/json'));
 
 app.get('/', (req, res) => {
     res.render('main', { layout: 'index', title: 'InfoVis | Team 16 | 2021' });
+});
+
+app.get('/data', (req, res) => {
+    if (req.query.hasOwnProperty('left') && req.query.hasOwnProperty('right')) {
+        res.send([
+            db.getData('/data/' + req.query.left),
+            db.getData('/data/' + req.query.right)
+        ])
+    } else {
+        // Compare two random paintings
+        let db_count = db.count('/data');
+        res.send([
+            db.getData('/data/' + Math.floor(Math.random() * db_count)),
+            db.getData('/data/' + Math.floor(Math.random() * db_count))
+        ]);
+    };
 });
 
 app.listen(port, () => console.log(`App available on http://localhost:${port}`));
