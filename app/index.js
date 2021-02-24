@@ -14,9 +14,8 @@ const Config = require('node-json-db/dist/lib/JsonDBConfig').Config;
 const db = new JsonDB(new Config('../data/example.json'));
 
 // Serve boostrap css and public files (D3 code, map data)
-app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
-app.use(express.static(__dirname + '/d3'));
-app.use(express.static(__dirname + '/json'));
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/static', express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
     res.render('main', { layout: 'index', title: 'InfoVis | Team 16 | 2021' });

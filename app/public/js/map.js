@@ -1,4 +1,4 @@
-function map_view(container_selector) {
+function map_view(geojson, container_selector) {
     //Width and height
     var w = 960;
     var h = 720;
@@ -21,7 +21,7 @@ function map_view(container_selector) {
         .style('border', '1px solid black');
 
     //Load in GeoJSON data
-    d3.json('ne_50m_admin_0_countries_simplified.json').then((data) => {
+    d3.json(geojson).then((data) => {
         //Bind data and create one path per GeoJSON feature
         svg.selectAll('path')
             .data(data.features)
