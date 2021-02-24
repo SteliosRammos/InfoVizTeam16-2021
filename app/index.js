@@ -11,6 +11,7 @@ app.engine('hbs', handlebars({
 
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use(express.static(__dirname + '/d3'));
+app.use(express.static(__dirname + '/json'));
 
 app.get('/', (req, res) => {
     res.render('main', { layout: 'index', title: 'InfoVis | Team 16 | 2021' });

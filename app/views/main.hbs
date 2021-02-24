@@ -2,9 +2,12 @@
     <h1 class="mt-5">
         {{title}}
     </h1>
+    <div id="map-view-container"></div>
     <div id="compare-view-container"></div>
+    <script type="text/javascript" src="map.js"></script>
     <script type="text/javascript" src="compare.js"></script>
     <script type="text/javascript">
+        map_view('#map-view-container');
         // Example data
         var data = [
             { "meta": {"artwork_name": "70 amx", "artist_full_name": "xynphix", "creation_year": 2007}, "image_url": "https://img00.deviantart.net/839b/i/2015/127/9/a/70_amx_by_xynphix-dyxa31.jpg" },
