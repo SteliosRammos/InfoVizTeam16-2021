@@ -1,1 +1,12 @@
 node_modules/
+.idea/
+
+data/intermediate/.ipynb_checkpoints/
+
+.ipynb_checkpoints/
+
+data/.DS_Store
+
+data/final/.DS_Store
+
+app/package-lock.json
