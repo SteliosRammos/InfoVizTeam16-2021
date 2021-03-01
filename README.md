@@ -1,5 +1,13 @@
 # Information Visualization Meetings
 
+## Serving with Node.js
+
+To host the visualization locally follow these steps:
+-  Install [Node.js](https://nodejs.org/en/), either [directly](https://nodejs.org/en/download/current/) or via [nvm](https://github.com/nvm-sh/nvm)
+- Make sure `app` is the working directory: `cd app`
+- Install dependencies: `npm install`
+- Launch the server: `node index.js`
+
 ## Meeting 11/02/2020
 
 - **Presented main idea:** using OmniArt dataset to create a map of Europe/World containing different artist through time and space. We also use the object tags.
