@@ -32,21 +32,18 @@ app.get('/', (req, res) => {
 app.post('/data', jsonParser, async (req, res) => {
 
     if (req.body.hasOwnProperty('parameters')) {
-         
-        db.connect(function(err) {
+                 
+        sql = selection.construct_sql_query(req.body.parameters);
+        console.log(sql)
+        
+        db.query(sql, function(err, results, fields) {
             if (err) throw err;
+            graph_data = graph_data_prep.graph_data(results);  
             
-            sql = selection.construct_sql_query(req.body.parameters);
-            
-            db.query(sql, function(err, results, fields) {
-                if (err) throw err;
-                graph_data = graph_data_prep.graph_data(results);  
-                
-                res.send([
-                    graph_data
-                ])
-            })
-        });
+            res.send([
+                graph_data
+            ])
+        })
     }
 });
 

@@ -1,6 +1,6 @@
-// const fs = require('fs')
-// let color_mapping = require('../color_mapping.json');
-// // cielab_data = {}
+const fs = require('fs')
+let color_mapping = require('../color_mapping.json');
+// cielab_data = {}
 
 // let cielab_data = Object.entries(color_mapping).reduce((data, [key, value]) => {
 //     data[key] = {
@@ -36,9 +36,13 @@ function calc_clab_distance(c1, c2) {
     return 1;
 }
 
+function cielab_to_hex(l, a, b) {
+    return 1;
+}
 function to_graph_data(results) {
     
-    let cielab_data = require('../cielab_data.json');
+    // let cielab_data = require('../cielab_data.json');
+    var cielab_reduced = {};
     var color_freq = {};
     var artist_freq = {};
     var artworks = {};
@@ -49,11 +53,31 @@ function to_graph_data(results) {
     dominant_clabs = results.map(r => r.dominant_color_lab);
     average_clab = calc_average_clab(dominant_clabs)
 
+    modulo = function(n, mod) {
+        return n - n % mod
+    }
     Object.entries(results).forEach(([key, r]) => {
 
         let c = r.dominant_color
+        let clab = r.dominant_color_lab.replace(/\[|\]/gi, '').split(',').map(e => Math.round(parseFloat(e)))
+        let cielab_key = clab.map(n => modulo.apply(null, [n, 4])).join('_')
+        
+        if (!cielab_reduced.hasOwnProperty(cielab_key)) {
+            cielab_reduced[cielab_key] = {
+                'counter': 0,
+                'x': 0,
+                'y': 0,
+                'z': 0
+            }
+        }
+
+        cielab_reduced[cielab_key].counter += 1
+        cielab_reduced[cielab_key].x += clab[0]
+        cielab_reduced[cielab_key].y += clab[1]
+        cielab_reduced[cielab_key].z += clab[2]
+
         let a = r.artist_full_name
-    
+        
         color_freq.hasOwnProperty(c) ? color_freq[c] += 1 : color_freq[c] = 1;
         artist_freq.hasOwnProperty(a) ? artist_freq[a] += 1 : artist_freq[a] = 1;
 
@@ -69,10 +93,18 @@ function to_graph_data(results) {
             'url': r.image_url,
             'dist_from_average': dist_from_average
         }
-
-        cielab_data[c].on = 1
     })
 
+    cielab_data = Object.entries(cielab_reduced).reduce((data, [key, value]) => {
+        key = [value.x / value.counter, value.y / value.counter, value.z / value.counter].map(e => Math.round(e)).join('_')
+        data[key] = {
+            "on": 1,
+            "chex": cielab_to_hex(value.x, value.y, value.z)
+        }
+
+        return data
+    }, {})
+    
     let order_per_dist = dsu(ids, distances);
     
     graph_data = {
@@ -85,7 +117,7 @@ function to_graph_data(results) {
         'order_per_dist': order_per_dist,
         'average_color': average_clab
     }
-
+    console.log(Object.keys(cielab_data).length)
     return graph_data
 }
 
