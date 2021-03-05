@@ -1,8 +1,14 @@
-const distances = require('./distances');
+const selection = require('./selection');
+var graph_data_prep = require('./graph_data_prep');
 
 const express = require('express');
+var bodyParser = require('body-parser')
+
 const app = express();
 const port = 3000;
+
+// create application/json parser
+var jsonParser = bodyParser.json()
 
 const DBConfig = require('./DBConfig');
 const db = DBConfig.db;
@@ -23,28 +29,25 @@ app.get('/', (req, res) => {
     res.render('main', { layout: 'index', title: 'InfoVis | Team 16 | 2021' });
 });
 
-app.get('/data', (req, res) => {
-    if (req.query.hasOwnProperty('left') && req.query.hasOwnProperty('right')) {
-        res.send([
-            db.getData('/data/' + req.query.left),
-            db.getData('/data/' + req.query.right)
-        ])
-    } else {
-        // Compare two random paintings
-        let db_count = db.count('/data');
-        res.send([
-            db.getData('/data/' + Math.floor(Math.random() * db_count)),
-            db.getData('/data/' + Math.floor(Math.random() * db_count))
-        ]);
-    };
-});
+app.post('/data', jsonParser, async (req, res) => {
 
-// Expects an array of IDs (of length 1 or 2), and a category (optional)
-app.get('/distance', (req, res) => {
-    if (req.query.hasOwnProperty('category')) {
-        res.send([distances.distance_from_average(req.query.id, req.query.category)])
-    } else {
-        res.send([distances.distance_between_artworks(req.query.id[0], req.query.id[1])])
+    if (req.body.hasOwnProperty('parameters')) {
+         
+        db.connect(function(err) {
+            if (err) throw err;
+            
+            sql = selection.construct_sql_query(req.body.parameters);
+            
+            db.query(sql, function(err, results, fields) {
+                if (err) throw err;
+                graph_data = graph_data_prep.graph_data(results);  
+                
+                res.send([
+                    graph_data
+                ])
+            })
+        });
     }
 });
+
 app.listen(port, () => console.log(`App available on http://localhost:${port}`));

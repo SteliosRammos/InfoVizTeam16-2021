@@ -1,0 +1,67 @@
+{
+    "cielab": {
+      "#c4b19f": { "on": 1, "cielab_coords": "[73.3395, 3.8766, 11.6824]" },
+      "#424143": { "on": 1, "cielab_coords": "[27.6934, 0.8709, -1.07]" },
+      "#7b6d5c": { "on": 1, "cielab_coords": "[46.8705, 2.5808, 11.5125]" },
+      "#f7edcd": { "on": 1, "cielab_coords": "[93.7754, -1.7515, 16.7219]" },
+      "#c8b7a5": { "on": 1, "cielab_coords": "[75.366, 3.0897, 11.3375]" }
+    },
+    "frequencies": {
+      "artists": {
+        "michael maier": 3,
+        "Honoré Daumier": 1,
+        "giovanni boccaccio": 1
+      },
+      "colors": {
+        "#c4b19f": 1,
+        "#424143": 1,
+        "#7b6d5c": 1,
+        "#f7edcd": 1,
+        "#c8b7a5": 1
+      }
+    },
+    "artworks": {
+      "03058b7e-c6cf-4e93-8417-395d8f49804a": {
+        "name": "facsimile",
+        "artist": "michael maier",
+        "year": null,
+        "url": "http://iiif.arkyves.org/uiuc_5401m28agk_fac051.jpg/full/150,/0/default.jpg",
+        "dist_from_average": 1
+      },
+      "06cb002a-061b-4aa8-91cb-e5658da46f9b": {
+        "name": "a sunday in the botanical gardens, published in souvenirs d'artistes",
+        "artist": "Honoré Daumier",
+        "year": "1862.0",
+        "url": "https://images.metmuseum.org/CRDImages/dp/original/DP876856.jpg",
+        "dist_from_average": 1
+      },
+      "070ac59d-349f-44b2-8c11-37fc0e04e5ea": {
+        "name": "facsimile",
+        "artist": "michael maier",
+        "year": null,
+        "url": "http://iiif.arkyves.org/uiuc_5401m28agk_fac080.jpg/full/150,/0/default.jpg",
+        "dist_from_average": 1
+      },
+      "0eed9ec0-ba25-49d1-bde4-17ad053124e4": {
+        "name": "manuscript illumination",
+        "artist": "giovanni boccaccio",
+        "year": null,
+        "url": "http://arkyves.org/f/133a5_360r_min.jpg",
+        "dist_from_average": 1
+      },
+      "20d7ae72-9670-4b50-974e-630d94e98434": {
+        "name": "facsimile",
+        "artist": "michael maier",
+        "year": null,
+        "url": "http://iiif.arkyves.org/uiuc_5401m28agk_fac101.jpg/full/150,/0/default.jpg",
+        "dist_from_average": 1
+      }
+    },
+    "order_per_dist": [
+      "03058b7e-c6cf-4e93-8417-395d8f49804a",
+      "06cb002a-061b-4aa8-91cb-e5658da46f9b",
+      "070ac59d-349f-44b2-8c11-37fc0e04e5ea",
+      "0eed9ec0-ba25-49d1-bde4-17ad053124e4",
+      "20d7ae72-9670-4b50-974e-630d94e98434"
+    ]
+  }
