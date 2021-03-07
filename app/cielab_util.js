@@ -1,23 +1,8 @@
 const DBConfig = require('./DBConfig');
 const db = DBConfig.db;
 
-// Placeholder for real values
-const cat_averages = {
-    "artist": {
-        "artist_a": "#54b52f",
-        "artist_b": "#b041ba",
-    },
-    "nationality": {
-        "nat_a": "#c49f6f",
-        "nat_b": "#aace11",
-    },
-    "artwork_type": {},
-    "century": {},
-    "general_type": {},
-    "school": {}
-};
 
-function get_distance(c1, c2) {
+function calc_clab_distance(c1, c2) {
     // Separate colors
     const l1 = c1[0]
     const a1 = c1[1]
@@ -93,28 +78,67 @@ function get_distance(c1, c2) {
     return deltaE;
 }
 
+function calc_average_clab(arr) {
+    // Finds the midpoint of the array iteratively
+    var average_l = arr[0][0]
+    var average_a = arr[0][1]
+    var average_b = arr[0][2]
+    for(let counter = 1; counter < arr.length; counter++) {
+        average_l = (average_l + arr[counter][0]) / 2
+        average_a = (average_a + arr[counter][1]) / 2
+        average_b = (average_b + arr[counter][2]) / 2
+    }
+    return [average_l, average_a, average_b];
+}
+
+function clab_to_hex(lab) {
+    var y = (lab[0] + 16) / 116,
+        x = lab[1] / 500 + y,
+        z = y - lab[2] / 200,
+        r, g, b;
+
+    x = 0.95047 * ((x * x * x > 0.008856) ? x * x * x : (x - 16 / 116) / 7.787);
+    y = 1.00000 * ((y * y * y > 0.008856) ? y * y * y : (y - 16 / 116) / 7.787);
+    z = 1.08883 * ((z * z * z > 0.008856) ? z * z * z : (z - 16 / 116) / 7.787);
+
+    r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+    g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+    b = x * 0.0557 + y * -0.2040 + z * 1.0570;
+
+    r = (r > 0.0031308) ? (1.055 * Math.pow(r, 1 / 2.4) - 0.055) : 12.92 * r;
+    g = (g > 0.0031308) ? (1.055 * Math.pow(g, 1 / 2.4) - 0.055) : 12.92 * g;
+    b = (b > 0.0031308) ? (1.055 * Math.pow(b, 1 / 2.4) - 0.055) : 12.92 * b;
+
+    // Round the rgb
+    var rgb = [Math.floor(Math.max(0, Math.min(1, r)) * 255),
+    Math.floor(Math.max(0, Math.min(1, g)) * 255),
+    Math.floor((Math.max(0, Math.min(1, b)) * 255))]
+
+    return "#" + ((1 << 24) + (rgb[0]<< 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+}
+
 // Gets artwork ID as input
-let distance_from_average = (id, category) => {
-    const artwork = db.getData('/'+id);
-    const artwork_cat = artwork[category];
+// let distance_from_average = (id, category) => {
+//     const artwork = db.getData('/'+id);
+//     const artwork_cat = artwork[category];
 
-    const artwork_dominant_c = artwork.dominant_color;
-    const cat_average_c = cat_averages[category][artwork_cat];
+//     const artwork_dominant_c = artwork.dominant_color;
+//     const cat_average_c = cat_averages[category][artwork_cat];
 
-    return get_distance(cat_average_c, artwork_dominant_c);
-}
+//     return get_distance(cat_average_c, artwork_dominant_c);
+// }
 
-let distance_between_artworks = (id1, id2) => {
-    const artwork_1 = db.getData('/'+id1);
-    const artwork_2 = db.getData('/'+id2);
+// let distance_between_artworks = (id1, id2) => {
+//     const artwork_1 = db.getData('/'+id1);
+//     const artwork_2 = db.getData('/'+id2);
 
-    return get_distance(artwork_1.dominant_color, artwork_2.dominant_color);
-}
+//     return get_distance(artwork_1.dominant_color, artwork_2.dominant_color);
+// }
 
 // let distance_between_dominant_and_palette = () => {};
 
 module.exports = {
-    distance_from_average: distance_from_average,
-    distance_between_artworks: distance_between_artworks,
-    // distance_between_dominant_and_palette: distance_between_dominant_and_palette
+    calc_average_clab: calc_average_clab,
+    calc_clab_distance: calc_clab_distance,
+    clab_to_hex: clab_to_hex
 }
