@@ -1,4 +1,4 @@
-node_modules/
+app/node_modules/
 .idea/
 
 data/intermediate/.ipynb_checkpoints/
