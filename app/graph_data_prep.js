@@ -1,6 +1,7 @@
 const fs = require('fs')
 const cielab = require('./cielab_util');
 let color_mapping = require('../color_mapping.json');
+const cielab_util = require('./cielab_util');
 // cielab_data = {}
 
 // let cielab_data = Object.entries(color_mapping).reduce((data, [key, value]) => {
@@ -31,7 +32,7 @@ function to_graph_data(results) {
 
     // let cielab_data = require('../cielab_data.json');
     var cielab_reduced = {};
-    var color_freq = {};
+    var rgb_freq = {};
     var artist_freq = {};
     var artworks = {};
     var distances = [];
@@ -39,16 +40,14 @@ function to_graph_data(results) {
 
     // 1. Get selection average color
     dominant_clabs = results.map(r => r.dominant_color_lab.replace(/\[|\]/gi, '').split(',').map(e => parseFloat(e)));
-    console.log(dominant_clabs);
     average_clab = cielab.calc_average_clab(dominant_clabs);
-    console.log(average_clab);
+    average_crgb = cielab_util.clab_to_hex(average_clab);
 
     modulo = function(n, mod) {
         return n - n % mod
     }
     Object.entries(results).forEach(([key, r]) => {
 
-        let c = r.dominant_color
         let clab = r.dominant_color_lab.replace(/\[|\]/gi, '').split(',').map(e => parseFloat(e))
         let cielab_key = clab.map(n => modulo.apply(null, [n, 3])).join('_')
         
@@ -68,7 +67,13 @@ function to_graph_data(results) {
 
         let a = r.artist_full_name
         
-        color_freq.hasOwnProperty(c) ? color_freq[c] += 1 : color_freq[c] = 1;
+
+        let chex = r.dominant_color
+        let crgb = cielab_util.hex_to_rgb(chex)
+
+        let crgb_key = crgb.map(n => modulo.apply(null, [n, 30])).join('_')
+        
+        rgb_freq.hasOwnProperty(crgb_key) ? rgb_freq[crgb_key].counter += 1 : rgb_freq[crgb_key] = 1;
         artist_freq.hasOwnProperty(a) ? artist_freq[a] += 1 : artist_freq[a] = 1;
 
         let dist_from_average = parseFloat(cielab.calc_clab_distance(average_clab, clab)).toFixed(2);
@@ -96,18 +101,18 @@ function to_graph_data(results) {
     }, {})
     
     let order_per_dist = dsu(ids, distances);
-    
+
     graph_data = {
         'cielab': cielab_data,
         'frequencies': {
             'artists': artist_freq,
-            'colors': color_freq
+            'colors': rgb_freq
         },
         'artworks': artworks,
         'order_per_dist': order_per_dist,
-        'average_color': average_clab
+        'average_color': average_crgb
     }
-    console.log(Object.keys(cielab_data).length)
+    // console.log(Object.keys(cielab_data).length)
     return graph_data
 }
 

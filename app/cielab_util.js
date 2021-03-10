@@ -117,6 +117,11 @@ function clab_to_hex(lab) {
     return "#" + ((1 << 24) + (rgb[0]<< 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
 }
 
+function hex_to_rgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
+}
+
 // Gets artwork ID as input
 // let distance_from_average = (id, category) => {
 //     const artwork = db.getData('/'+id);
@@ -140,5 +145,6 @@ function clab_to_hex(lab) {
 module.exports = {
     calc_average_clab: calc_average_clab,
     calc_clab_distance: calc_clab_distance,
-    clab_to_hex: clab_to_hex
+    clab_to_hex: clab_to_hex,
+    hex_to_rgb: hex_to_rgb
 }
