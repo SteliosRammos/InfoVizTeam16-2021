@@ -64,19 +64,20 @@ function volume_view(data_json, container_selector) {
     function init() {
         d3.json(data_json).then((data) => {
             cubeData = [];
-            var max = Math.max(...data['volume']);
-            data['volume'].forEach((d, i) => {
-                cubeData.push(makeCube(d / max / 2, i));
+            var max = Math.max(...d3.values(data.frequencies.colors));
+            d3.entries(data.frequencies.colors).forEach((d) => {
+                cubeData.push(makeCube(d.value / max / 2, d.key));
             });
             updateCubes(cubes3d(cubeData), 1000);
         });
     };
 
-    function makeCube(size, idx) {
-        var offset = Math.floor(gridSize / 2)
-        var x = idx % gridSize - offset;
-        var y = Math.floor((idx % gridSize ** 2) / gridSize) - offset;
-        var z = Math.floor(idx / gridSize ** 2) - offset;
+    function makeCube(size, key) {
+        var offset = Math.floor(gridSize / 2);
+        var xyz = key.split('_').map(n => parseInt(n) - offset);
+        var x = xyz[0];
+        var y = xyz[1];
+        var z = xyz[2];
         var cube = [
             {x: x - size, y: -y + size, z: z + size}, // FRONT TOP LEFT
             {x: x - size, y: -y - size, z: z + size}, // FRONT BOTTOM LEFT
@@ -87,11 +88,11 @@ function volume_view(data_json, container_selector) {
             {x: x + size, y: -y - size, z: z - size}, // BACK  BOTTOM RIGHT
             {x: x + size, y: -y + size, z: z - size}, // BACK  TOP RIGHT
         ];
-        function xyz_to_rgb(xyz) {
-            return Math.round(255 / gridSize / 2 * (1 + 2 * (xyz + offset)));
+        function xyz_to_rgb(d) {
+            return Math.round(255 / gridSize / 2 * (1 + 2 * (d + offset)));
         };
         cube.color = `rgb(${xyz_to_rgb(x)}, ${xyz_to_rgb(y)}, ${xyz_to_rgb(z)})`;
-        cube.id = idx;
+        cube.id = key;
         return cube;
     };
 

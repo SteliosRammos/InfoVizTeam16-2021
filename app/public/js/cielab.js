@@ -37,9 +37,9 @@ function cielab_view(data_json, container_selector) {
     var mx, my, mouseX, mouseY;
 
     var point3d = d3._3d()
-        .x((d) => { return d.value.coords[xCoord] / xStep; })
-        .y((d) => { return -d.value.coords[yCoord] / yStep; })
-        .z((d) => { return d.value.coords[zCoord] / zStep; })
+        .x((d) => { return d.coords[xCoord] / xStep; })
+        .y((d) => { return -d.coords[yCoord] / yStep; })
+        .z((d) => { return d.coords[zCoord] / zStep; })
         .origin(origin)
         .rotateY(startAngle)
         .rotateX(-startAngle)
@@ -63,10 +63,10 @@ function cielab_view(data_json, container_selector) {
             .attr('cy', (d) => { return d.projected.y; })
             .merge(points)
             // .sort(point3d.sort) // Intensive calculation, but improves scatterplot
-            .attr('r', (d) => { return d.value.display ? 4 : 2; })
-            .attr('stroke', (d) => { return d.value.display ? 'black' : 'none'; })
-            .attr('fill', (d) => { return d.value.display ? d.value.color : 'black'; })
-            .attr('opacity', (d) => { return d.value.display ? 0.8 : 0.2; })
+            .attr('r', (d) => { return d.on ? 4 : 2; })
+            .attr('stroke', (d) => { return d.on ? 'black' : 'none'; })
+            .attr('fill', (d) => { return d.on ? d.chex : 'black'; })
+            .attr('opacity', (d) => { return d.on ? 0.8 : 0.2; })
             .attr('cx', (d) => { return d.projected.x; })
             .attr('cy', (d) => { return d.projected.y; });
     };
@@ -130,9 +130,9 @@ function cielab_view(data_json, container_selector) {
     };
 
     function updateAxes(axes) {
-        g.selectAll('path.xAxis').data(axes['xAxis']).attr('d', axis3d.draw);
-        g.selectAll('path.yAxis').data(axes['yAxis']).attr('d', axis3d.draw);
-        g.selectAll('path.zAxis').data(axes['zAxis']).attr('d', axis3d.draw);
+        g.selectAll('path.xAxis').data(axes.xAxis).attr('d', axis3d.draw);
+        g.selectAll('path.yAxis').data(axes.yAxis).attr('d', axis3d.draw);
+        g.selectAll('path.zAxis').data(axes.zAxis).attr('d', axis3d.draw);
 
         var xText = g.selectAll('text.xText').data(axes.xAxis[0]);
         var yText = g.selectAll('text.yText').data(axes.yAxis[0]);
@@ -163,7 +163,7 @@ function cielab_view(data_json, container_selector) {
     // Something like this whenever selection is updated
     function on_update() {
         d3.json(data_json).then((data) => {
-            pointData = d3.entries(data['cielab_reduced']);
+            pointData = d3.values(data.cielab);
             updatePoints(point3d(pointData));
         });
     };
@@ -189,7 +189,7 @@ function cielab_view(data_json, container_selector) {
         initAxes(axes);
 
         d3.json(data_json).then((data) => {
-            pointData = d3.entries(data['cielab_reduced']);
+            pointData = d3.values(data.cielab);
             updatePoints(point3d(pointData));
         });
     };
