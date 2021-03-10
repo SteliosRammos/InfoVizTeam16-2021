@@ -1,7 +1,7 @@
 function volume_view(data_json, container_selector) {
     var container = d3.select(container_selector);
-    var w = parseInt(container.node().getAttribute('width'));
-    var h = parseInt(container.node().getAttribute('height'));
+    var w = 720;
+    var h = 540;
 
     var origin = [w / 2, h / 2],
         gridSize = 5;
