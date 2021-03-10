@@ -1,6 +1,7 @@
 function cielab_view(data_json, container_selector) {
-    var w = 960;
-    var h = 720;
+    var container = d3.select(container_selector);
+    var w = parseInt(container.node().getAttribute('width'));
+    var h = parseInt(container.node().getAttribute('height'));
 
     var yCoord = 0, // L*
         yRange = [0, 100],
@@ -13,7 +14,7 @@ function cielab_view(data_json, container_selector) {
         zStep = 15;
 
     var origin = [w / 2, h / 4 * 3],
-        scale = 50,
+        scale = 20,
         pointData = [],
         xAxis = [],
         yAxis = [],
@@ -22,15 +23,13 @@ function cielab_view(data_json, container_selector) {
         beta = 0,
         startAngle = Math.PI / 4;
 
-    var svg = d3.select(container_selector)
-        .append('svg')
-        .attr('width', w)
-        .attr('height', h)
-        .style('border', '1px solid black')
-        .call(d3.drag()
-            .on('drag', dragged)
-            .on('start', dragStart)
-            .on('end', dragEnd));
+    var svg = container.append('svg')
+    .attr('width', w)
+    .attr('height', h)
+    .call(d3.drag()
+        .on('drag', dragged)
+        .on('start', dragStart)
+        .on('end', dragEnd));
 
     var g = svg.append('g');
 

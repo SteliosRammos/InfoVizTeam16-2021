@@ -1,12 +1,11 @@
 function graph_view(data_json, container_selector, tooltip_selector) {
-    var w = 480;
-    var h = 480;
+    var container = d3.select(container_selector);
+    var w = parseInt(container.node().getAttribute('width'));
+    var h = parseInt(container.node().getAttribute('height'));
 
-    var svg = d3.select(container_selector)
-        .append('svg')
+    var svg = container.append('svg')
         .attr('width', w)
         .attr('height', h)
-        .style('border', '1px solid black');
 
     var g = svg.append('g');
 

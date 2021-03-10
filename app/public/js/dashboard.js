@@ -2,7 +2,7 @@
 
 
 
-function dashboard_view(data_endpoint, container_selector) {
+function dashboard_view(container_selector) {
     var margin = { top: 20, right: 20, bottom: 20, left: 20 };
     var top_border = 25
     var left_border = 50
@@ -16,67 +16,76 @@ function dashboard_view(data_endpoint, container_selector) {
 
    var chart1 = svg.append("g")
         .attr("id", "chart1")
+        .attr("transform", "translate(" + 10 + "," + 10 + ")")
+        .attr("width", 280 )
+        .attr("height", height - 20)
         .append("rect")
         .attr('class', '.box')
         .attr("fill", 'none')
         .attr("width", 280 )
         .attr("height", height - 20)
-        .style('stroke', 'black')
-        .attr("transform", "translate(" + 10 + "," + 10 + ")");
+        .style('stroke', 'black');
 
    var chart2 = svg.append("g")
         .attr("id", "chart2")
+        .attr("transform", "translate(" + 300 + "," + 10 + ")")
+        .attr("width", 490 )
+        .attr("height", height/2 - 10)
         .append("rect")
         .attr("fill", 'none')
         .attr("width", 490 )
         .attr("height", height/2 - 10)
-        .style('stroke', 'black')
-        .attr("transform", "translate(" + 300 + "," + 10 + ")");
+        .style('stroke', 'black');
 
    var chart3 = svg.append("g")
         .attr("id", "chart3")
+        .attr("transform", "translate(" + 800 + "," + 10 + ")")
+        .attr("width", 470 )
+        .attr("height", height/2 - 10)
         .append("rect")
         .attr("fill", 'none')
         .attr("width", 470 )
         .attr("height", height/2 - 10)
-        .style('stroke', 'black')
-        .attr("transform", "translate(" + 800 + "," + 10 + ")");
+        .style('stroke', 'black');
 
    var chart4 = svg.append("g")
         .attr("id", "chart4")
+        .attr("transform", "translate(" + 300 + "," + (height/2 + 10) + ")")
+        .attr("width", 490 )
+        .attr("height", height/2 - 20)
         .append("rect")
         .attr("fill", 'none')
         .attr("width", 490 )
         .attr("height", height/2 - 20)
-        .style('stroke', 'black')
-        .attr("transform", "translate(" + 300 + "," + (height/2 + 10) + ")");
-
+        .style('stroke', 'black');
 
    var chart5 = svg.append("g")
         .attr("id", "chart5")
+        .attr("transform", "translate(" + 800 + "," + (height/2 + 10) + ")")
+        .attr("width", 470 )
+        .attr("height", height/2 - 20)
         .append("rect")
         .attr("fill", 'none')
         .attr("width", 470 )
         .attr("height", height/2 - 20)
-        .style('stroke', 'black')
-        .attr("transform", "translate(" + 800 + "," + (height/2 + 10) + ")");
+        .style('stroke', 'black');
 
-    var y = d3.scaleLinear().rangeRound([0, 350]),
-    	x = d3.scaleBand().rangeRound([0,490]);
-    var map = d3.map()
-        .set("foo", 1)
-        .set("bar", 2);
+//     var y = d3.scaleLinear().rangeRound([0, 350]),
+//     	x = d3.scaleBand().rangeRound([0,490]);
+//     var map = d3.map()
+//         .set("foo", 1)
+//         .set("bar", 2);
 
- // Code for column chart
-   var chart2=svg.append("g")
-         .data(map.entries())
-         .enter()
-         .append("rect")
-         .style('stroke', "red")
-         .attr("x", function (d) { return x(d.key)})
-         .attr("y", function (d) { return y(d.value) })
-         .attr("width", x.bandwidth())
-         .attr("height", function(d) { return 350 - y(d.value); })
+//  // Code for column chart
+//    var chart2=svg.append("g")
+//          .data(map.entries())
+//          .enter()
+//          .append("rect")
+//          .style('stroke', "red")
+//          .attr("x", function (d) { return x(d.key)})
+//          .attr("y", function (d) { return y(d.value) })
+//          .attr("width", x.bandwidth())
+//          .attr("height", function(d) { return 350 - y(d.value); })
 
 //         .on("mouseover", function(d, i) {
 //             var x_var = d.key;

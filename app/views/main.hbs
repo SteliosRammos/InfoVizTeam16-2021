@@ -2,17 +2,20 @@
     <h1 class="mt-5">
         {{title}}
     </h1>
-    <div id="cielab-container"></div>
+    <div id="dashboard"></div>
+    {{!-- <div id="cielab-container"></div>
     <div id="volume-container"></div>
-    <div id="graph-container"></div>
+    <div id="graph-container"></div> --}}
     <div id="graph-tooltip"></div>
+    <script type="text/javascript" src="static/js/dashboard.js"></script>
     <script type="text/javascript" src="static/js/cielab.js"></script>
     <script type="text/javascript" src="static/js/volume.js"></script>
     <script type="text/javascript" src="static/js/graph.js"></script>
     <script type="text/javascript">
+        dashboard_view('#dashboard');
         var data_json = 'static/data/example.json';
-        cielab_view(data_json, '#cielab-container');
-        volume_view(data_json, '#volume-container');
-        graph_view(data_json, '#graph-container', '#graph-tooltip')
+        cielab_view(data_json, '#chart2');
+        volume_view(data_json, '#chart4');
+        graph_view(data_json, '#chart5', '#graph-tooltip')
     </script>
 </main>
