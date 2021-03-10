@@ -10,3 +10,5 @@ data/.DS_Store
 data/final/.DS_Store
 
 app/package-lock.json
+
+.DS_Store
