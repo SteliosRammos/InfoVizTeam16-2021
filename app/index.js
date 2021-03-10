@@ -40,9 +40,9 @@ app.post('/data', jsonParser, async (req, res) => {
             if (err) throw err;
             graph_data = graph_data_prep.graph_data(results);  
             
-            res.send([
+            res.send(
                 graph_data
-            ])
+            )
         })
     }
 });

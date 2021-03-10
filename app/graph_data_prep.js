@@ -25,7 +25,7 @@ const cielab_util = require('./cielab_util');
 
 const dsu = (arr1, arr2) => arr1
     .map((item, index) => [arr2[index], item]) // add the args to sort by
-    .sort(([arg1], [arg2]) => arg2 - arg1) // sort by the args
+    .sort(([arg1], [arg2]) => arg1 - arg2) // sort by the args
     .map(([, item]) => item); // extract the sorted items
 
 function to_graph_data(results) {
@@ -71,9 +71,9 @@ function to_graph_data(results) {
         let chex = r.dominant_color
         let crgb = cielab_util.hex_to_rgb(chex)
 
-        let crgb_key = crgb.map(n => modulo.apply(null, [n, 30])).join('_')
+        let crgb_key = crgb.map(n => Math.floor(modulo.apply(null, [n, 52]) / 52)).join('_') // 52 -> 5x5x5 grid
         
-        rgb_freq.hasOwnProperty(crgb_key) ? rgb_freq[crgb_key].counter += 1 : rgb_freq[crgb_key] = 1;
+        rgb_freq.hasOwnProperty(crgb_key) ? rgb_freq[crgb_key] += 1 : rgb_freq[crgb_key] = 1;
         artist_freq.hasOwnProperty(a) ? artist_freq[a] += 1 : artist_freq[a] = 1;
 
         let dist_from_average = parseFloat(cielab.calc_clab_distance(average_clab, clab)).toFixed(2);
@@ -91,10 +91,12 @@ function to_graph_data(results) {
     })
 
     cielab_data = Object.entries(cielab_reduced).reduce((data, [key, value]) => {
-        key = [value.x / value.counter, value.y / value.counter, value.z / value.counter].map(e => Math.round(e)).join('_')
+        var coords = [value.x / value.counter, value.y / value.counter, value.z / value.counter]
+        key = coords.map(e => Math.round(e)).join('_')
         data[key] = {
+            "coords": coords,
             "on": 1,
-            "chex": cielab.clab_to_hex([value.x, value.y, value.z])
+            "chex": cielab.clab_to_hex(coords)
         }
 
         return data
