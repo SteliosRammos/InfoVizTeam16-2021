@@ -38,7 +38,8 @@ app.post('/data', jsonParser, async (req, res) => {
         
         db.query(sql, function(err, results, fields) {
             if (err) throw err;
-            graph_data = graph_data_prep.graph_data(results);  
+            
+            graph_data = results.length ==0 ? {} : graph_data_prep.graph_data(results);  
             
             res.send(
                 graph_data
