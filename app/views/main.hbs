@@ -12,10 +12,42 @@
     <script type="text/javascript" src="static/js/volume.js"></script>
     <script type="text/javascript" src="static/js/graph.js"></script>
     <script type="text/javascript">
-        dashboard_view('#dashboard');
+        
         var data_json = 'static/data/example.json';
+        dashboard_view('#dashboard');
         cielab_view(data_json, '#chart2');
         volume_view(data_json, '#chart4');
         graph_view(data_json, '#chart5', '#graph-tooltip')
+
+        // event emmited when receiving message 
+        var ws = new WebSocket('ws://localhost:40510');
+
+        ws.onopen = () => {
+
+            const parameters = JSON.stringify({
+                century: 17.0,
+                artist_nationality: "France",
+                artwork_type: "genre painting",
+                general_type: "painting",
+    		})
+
+            {{!-- school: None, --}}
+            ws.send(parameters)
+        }
+
+        ws.onmessage = (ev) => {
+            console.log(ev);
+            data_json = ev.data
+            data_json = JSON.parse(ev.data)
+            console.log(data_json)
+
+            {{!-- dashboard_view('#dashboard');
+            cielab_view(data_json, '#chart2');
+            volume_view(data_json, '#chart4');
+            graph_view(data_json, '#chart5', '#graph-tooltip') --}}
+        }
+
+        
+
     </script>
 </main>
