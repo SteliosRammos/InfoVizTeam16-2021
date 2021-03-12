@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="jquery.min.js"></script>
+  </head>
+  <body>
+  	<label>Century:</label>
+  	<select id='century', name='century'>
+        <option value="">--select--</option>
+  	    <option value="0">the 8th century</option>
+  	    <option value="1">the 11th century</option>
+  	    <option value="2">the 12th century </option>
+  	    <option value="3">the 13th century</option>
+  	    <option value="4">the 14th century</option>
+  	    <option value="5">the 15th century</option>
+  	    <option value="6">the 16th century</option>
+  	    <option value="7">the 17th century</option>
+  	    <option value="8">the 18th century</option>
+  	    <option value="9">the 19th century</option>
+  	    <option value="10">the 20th century</option>
+  	    <option value="11">the 21st century</option>
+  	    <option value="12">the unknown century</option>
+  	</select><br/><br/>
+
+    <label>Country:</label> 
+  	<select id='country', name="country">
+      <option value="">--select--</option>
+  		<option value="0">Spain</option>
+  		<option value="1">America</option>
+  		<option value="2">Italy</option>
+  		<option value="3">France</option>
+  		<option value="4">China</option>
+  		<option value="5">Japan</option>
+  		<option value="6">England</option>
+  		<option value="7">Netherlands</option>
+  		<option value="8">Germany</option>
+  		<option value="9">Austria</option>
+  	</select><br/><br/>
+    
+    <label>Artwork Type:</label> 
+  	<select id='artwork_type', name="artwork_type">
+      <option value="">--select--</option>
+  		<option value="0">Abstract</option>
+  		<option value="1">Animal Painting</option>
+  		<option value="2">Architecture</option>
+  		<option value="3">Audio</option>
+  		<option value="4">Bijinga</option>
+  		<option value="5">Book Illustration</option>
+  		<option value="6">Calligraphy</option>
+  		<option value="7">Capriccio</option>
+  		<option value="8">Ceramics</option>
+  		<option value="9">Cityscape</option>
+  		<option value="10">Costumes</option>
+  		<option value="11">Design</option>
+  		<option value="12">Drawings</option>
+  		<option value="13">Emblem Pictura</option>
+  		<option value="14">Enamels-basse Taille</option>
+  		<option value="15">Facsimile</option>
+  		<option value="16">Calligraphy</option>
+  		<option value="17">Film</option>
+  		<option value="18">Flower Painting</option>
+  		<option value="19">Genre Painting</option>
+  		<option value="20">Glass</option>
+  		<option value="21">Graphics</option>
+  		<option value="22">History Painting</option>
+  		<option value="23">Illumination</option>
+  		<option value="24">Illustrated Book</option>
+  		<option value="25">Illustration</option>
+  		<option value="26">Installation</option>
+  		<option value="27">Interior</option>
+  		<option value="28">Ivories</option>
+  		<option value="29">Landscape</option>
+  		<option value="30">Literary Painting</option>
+  		<option value="31">Manuscript Illumination</option>
+  		<option value="32">Metalwork</option>
+  		<option value="33">Mies Van der Rohe Archive</option>
+  		<option value="34">Mythological Painting</option>
+  		<option value="35">Nude painting</option>
+  		<option value="36">Painting</option>
+  		<option value="37">Photo</option>
+  		<option value="38">Photograph</option>
+  		<option value="39">Portrait</option>
+  		<option value="40">Poster</option>
+  		<option value="41">Print</option>
+  		<option value="42">Printers Device</option>
+  		<option value="43">Sculpture</option>
+  		<option value="44">Self-portrait</option>
+  		<option value="45">Sketch and study</option>
+  		<option value="46">Stucco</option>
+  		<option value="47">Symbolic Painting</option>
+  		<option value="48">Video</option>
+  		<option value="49">Others</option>
+  		<option value="50">Unknown</option>
+  	</select><br/><br/>
+
+  	<label>School:</label> 
+  	<select id='school', name="school">
+      <option value="">--select--</option>
+  		<option value="0">American</option>
+  		<option value="1">Austrian</option>
+  		<option value="2">Catalan</option>
+  		<option value="3">Chinese</option>
+  		<option value="4">Danish</option>
+  		<option value="5">Deutschland</option>
+  		<option value="6">Dutch</option>
+  		<option value="7">English</option>
+  		<option value="8">Flemish</option>
+  		<option value="9">France</option>
+  		<option value="10">German</option>
+  		<option value="11">France</option>
+  		<option value="12">Britain</option>
+  		<option value="13">Hungarian</option>
+  		<option value="14">Italian</option>
+  		<option value="15">Japanese</option>
+  		<option value="16">Modern</option>
+  		<option value="17">Unknown</option>
+  	</select><br/><br/>
+
+  	<label>General Type:</label> 
+  	<select id='general_type', name="general_type">
+      <option value="">--select--</option>
+  		<option value="0">Craft</option>
+  		<option value="1">Design</option>
+  		<option value="2">Drawing</option>
+  		<option value="3">Installation</option>
+  		<option value="4">New Media</option>
+  		<option value="5">Painting</option>
+  		<option value="6">Photograph</option>
+  		<option value="7">Print</option>
+  		<option value="8">Sculpture</option>
+  		<option value="9">Textile</option>
+  		<option value="10">Unknown</option>
+  	</select><br/><br/>
+    <button type="submit" >Sumbit</button><br>
+  <script type="text/javascript">
+    function showselected(){
+      var centurySelected = $("#century option: selected").val();
+      var countrySelected = $("#country option: selected").val();
+      var artwork_typeSelected = $("artwork_type option: selected").val();
+      var schoolSelected = $("school option: selected").val();
+      var general_typeSelected = $("general_type option: selected").val();
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "...",
+        data: "id="+centurySelected,
+        success: function(data){
+          $('#output').html(data);
+        }
+      })
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "...",
+        data: "id="+countrySelected,
+        success: function(data){
+          $('#output').html(data);
+        }
+      })
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "...",
+        data: "id="+artwork_typeSelected,
+        success: function(data){
+          $('#output').html(data);
+        }
+      })
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "...",
+        data: "id="+schoolSelected,
+        success: function(data){
+          $('#output').html(data);
+        }
+      })
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "...",
+        data: "id="+general_typeSelected,
+        success: function(data){
+          $('#output').html(data);
+        }
+      })
+    }
+  </script>
+
+
+
+  </body>
+</html>
+
+
