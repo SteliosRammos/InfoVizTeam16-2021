@@ -91,4 +91,30 @@
     cielab_view(data_json);
     volume_view(data_json);
     graph_view(data_json);
+
+    // event emmited when receiving message 
+    var ws = new WebSocket('ws://localhost:40510');
+
+    ws.onopen = () => {
+
+        const parameters = JSON.stringify({
+            century: 17.0,
+            artist_nationality: "France",
+            artwork_type: "genre painting",
+            general_type: "painting",
+        })
+
+        ws.send(parameters);
+    }
+
+    ws.onmessage = (ev) => {
+        console.log(ev);
+        data_json = ev.data;
+        data_json = JSON.parse(ev.data);
+        console.log(data_json);
+
+        cielab_view(data_json);
+        volume_view(data_json);
+        update_graph(data_json);
+    }
 </script>

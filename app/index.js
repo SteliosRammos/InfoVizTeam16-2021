@@ -2,10 +2,16 @@ const selection = require('./selection');
 var graph_data_prep = require('./graph_data_prep');
 
 const express = require('express');
-var bodyParser = require('body-parser')
+const handlebars = require('express-handlebars');
+const { runInNewContext } = require('vm');
+const ws = require('ws');
+var bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000;
+
+//initialize the WebSocket server instance
+const wss = new ws.Server({port: 40510})
 
 // create application/json parser
 var jsonParser = bodyParser.json()
@@ -13,8 +19,7 @@ var jsonParser = bodyParser.json()
 const DBConfig = require('./DBConfig');
 const db = DBConfig.db;
 
-const handlebars = require('express-handlebars');
-const { runInNewContext } = require('vm');
+
 app.set('view engine', 'hbs');
 app.engine('hbs', handlebars({
     layoutsDir: __dirname + '/views/layouts',
@@ -29,23 +34,45 @@ app.get('/', (req, res) => {
     res.render('main', { layout: 'index', title: 'InfoVis | Team 16 | 2021' });
 });
 
-app.post('/data', jsonParser, async (req, res) => {
+// app.post('/data', jsonParser, async (req, res) => {
 
-    if (req.body.hasOwnProperty('parameters')) {
+//     if (req.body.hasOwnProperty('parameters')) {
                  
-        sql = selection.construct_sql_query(req.body.parameters);
+//         sql = selection.construct_sql_query(req.body.parameters);
+//         console.log(sql)
+        
+//         db.query(sql, function(err, results, fields) {
+//             if (err) throw err;
+            
+//             graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);  
+            
+//         })
+
+//         res.send(
+//             graph_data
+//         )
+//     }
+// });
+
+wss.on('connection', function (ws) {
+    ws.on('message', function (message) {
+        console.log('received: %s', message)
+        parameters = JSON.parse(message);
+        sql = selection.construct_sql_query(parameters);
         console.log(sql)
         
         db.query(sql, function(err, results, fields) {
             if (err) throw err;
             
-            graph_data = results.length ==0 ? {} : graph_data_prep.graph_data(results);  
-            
-            res.send(
-                graph_data
-            )
+            graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);    
+            ws.send(JSON.stringify(graph_data))
         })
-    }
-});
 
+    })
+    
+})
 app.listen(port, () => console.log(`App available on http://localhost:${port}`));
+
+
+
+

@@ -134,62 +134,13 @@
   	</select><br/><br/>
     <button type="submit" >Sumbit</button><br>
   <script type="text/javascript">
+
     function showselected(){
-      var centurySelected = $("#century option: selected").val();
-      var countrySelected = $("#country option: selected").val();
-      var artwork_typeSelected = $("artwork_type option: selected").val();
-      var schoolSelected = $("school option: selected").val();
-      var general_typeSelected = $("general_type option: selected").val();
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+centurySelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+countrySelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+artwork_typeSelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+schoolSelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+general_typeSelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
+		var centurySelected = $("#century option: selected").val();
+		var countrySelected = $("#country option: selected").val();
+		var artwork_typeSelected = $("artwork_type option: selected").val();
+		var schoolSelected = $("school option: selected").val();
+		var general_typeSelected = $("general_type option: selected").val();
     }
   </script>
 
