@@ -1,7 +1,6 @@
-function cielab_view(data_json, container_selector) {
-    var container = d3.select(container_selector);
-    var w = parseInt(container.node().getAttribute('width'));
-    var h = parseInt(container.node().getAttribute('height'));
+function cielab_view(data_json) {
+    var w = 720;
+    var h = 540;
 
     var yCoord = 0, // L*
         yRange = [0, 100],
@@ -14,7 +13,7 @@ function cielab_view(data_json, container_selector) {
         zStep = 15;
 
     var origin = [w / 2, h / 4 * 3],
-        scale = 20,
+        scale = 40,
         pointData = [],
         xAxis = [],
         yAxis = [],
@@ -23,13 +22,13 @@ function cielab_view(data_json, container_selector) {
         beta = 0,
         startAngle = Math.PI / 4;
 
-    var svg = container.append('svg')
-    .attr('width', w)
-    .attr('height', h)
-    .call(d3.drag()
-        .on('drag', dragged)
-        .on('start', dragStart)
-        .on('end', dragEnd));
+    var svg = d3.select(CIELAB).append('svg')
+        .attr('width', w)
+        .attr('height', h)
+        .call(d3.drag()
+            .on('drag', dragged)
+            .on('start', dragStart)
+            .on('end', dragEnd));
 
     var g = svg.append('g');
 
@@ -61,7 +60,7 @@ function cielab_view(data_json, container_selector) {
             .attr('cx', (d) => { return d.projected.x; })
             .attr('cy', (d) => { return d.projected.y; })
             .merge(points)
-            // .sort(point3d.sort) // Intensive calculation, but improves scatterplot
+            .sort(point3d.sort) // Intensive calculation, but improves scatterplot
             .attr('r', (d) => { return d.on ? 4 : 2; })
             .attr('stroke', (d) => { return d.on ? 'black' : 'none'; })
             .attr('fill', (d) => { return d.on ? d.chex : 'black'; })
