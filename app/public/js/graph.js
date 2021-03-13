@@ -1,7 +1,7 @@
 var graph_width = 480;
 var graph_height = 480;
 
-function graph_view(data_json) {
+function graph_view() {
     var svg = d3.select(GRAPH).append('svg')
         .attr('width', graph_width)
         .attr('height', graph_height);
@@ -10,8 +10,6 @@ function graph_view(data_json) {
     svg.append('g').attr('id', 'nodes')
 
     init_tooltip();
-
-    d3.json(data_json).then((data) => { update_graph(data); });
 };
 
 function update_graph(data) {

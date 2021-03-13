@@ -85,12 +85,11 @@
     var CIELAB = '#cielab-view',
         VOLUME = '#volume-view',
         GRAPH = '#graph-view',
-        TOOLTIP = '#tooltip'
+        TOOLTIP = '#tooltip';
 
-    var data_json = 'static/data/example.json';
-    cielab_view(data_json);
-    volume_view(data_json);
-    graph_view(data_json);
+    cielab_view();
+    volume_view();
+    graph_view();
 
     // event emmited when receiving message 
     var ws = new WebSocket('ws://localhost:40510');
@@ -100,8 +99,8 @@
         const parameters = JSON.stringify({
             century: 17.0,
             artist_nationality: "France",
-            artwork_type: "genre painting",
-            general_type: "painting",
+            //artwork_type: "genre painting",
+            //general_type: "painting",
         })
 
         ws.send(parameters);
@@ -113,8 +112,8 @@
         data_json = JSON.parse(ev.data);
         console.log(data_json);
 
-        cielab_view(data_json);
-        volume_view(data_json);
+        update_cielab(data_json);
+        update_volume(data_json);
         update_graph(data_json);
     }
 </script>
