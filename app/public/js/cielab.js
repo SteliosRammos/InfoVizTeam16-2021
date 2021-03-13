@@ -1,5 +1,4 @@
-function cielab_view(data_json, container_selector) {
-    var container = d3.select(container_selector);
+function cielab_view(data_json) {
     var w = 720;
     var h = 540;
 
@@ -23,13 +22,13 @@ function cielab_view(data_json, container_selector) {
         beta = 0,
         startAngle = Math.PI / 4;
 
-    var svg = container.append('svg')
-    .attr('width', w)
-    .attr('height', h)
-    .call(d3.drag()
-        .on('drag', dragged)
-        .on('start', dragStart)
-        .on('end', dragEnd));
+    var svg = d3.select(CIELAB).append('svg')
+        .attr('width', w)
+        .attr('height', h)
+        .call(d3.drag()
+            .on('drag', dragged)
+            .on('start', dragStart)
+            .on('end', dragEnd));
 
     var g = svg.append('g');
 

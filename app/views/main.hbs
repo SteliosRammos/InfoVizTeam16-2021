@@ -77,13 +77,18 @@
         </main>
     </div>
 </div>
-<div id="graph-tooltip"></div>
+<div id="tooltip"></div>
 <script type="text/javascript" src="static/js/cielab.js"></script>
 <script type="text/javascript" src="static/js/volume.js"></script>
 <script type="text/javascript" src="static/js/graph.js"></script>
 <script type="text/javascript">
+    var CIELAB = '#cielab-view',
+        VOLUME = '#volume-view',
+        GRAPH = '#graph-view',
+        TOOLTIP = '#tooltip'
+
     var data_json = 'static/data/example.json';
-    cielab_view(data_json, '#cielab-view');
-    volume_view(data_json, '#volume-view');
-    graph_view(data_json, '#graph-view', '#graph-tooltip')
+    cielab_view(data_json);
+    volume_view(data_json);
+    graph_view(data_json);
 </script>
