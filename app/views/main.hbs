@@ -1,53 +1,120 @@
-<main role="main" class="container">
-    <h1 class="mt-5">
-        {{title}}
-    </h1>
-    <div id="dashboard"></div>
-    {{!-- <div id="cielab-container"></div>
-    <div id="volume-container"></div>
-    <div id="graph-container"></div> --}}
-    <div id="graph-tooltip"></div>
-    <script type="text/javascript" src="static/js/dashboard.js"></script>
-    <script type="text/javascript" src="static/js/cielab.js"></script>
-    <script type="text/javascript" src="static/js/volume.js"></script>
-    <script type="text/javascript" src="static/js/graph.js"></script>
-    <script type="text/javascript">
-        
-        var data_json = 'static/data/example.json';
-        dashboard_view('#dashboard');
-        cielab_view(data_json, '#chart2');
-        volume_view(data_json, '#chart4');
-        graph_view(data_json, '#chart5', '#graph-tooltip')
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-2 bg-dark">
+                <ul class="nav flex-column">
+                    <li class="nav-item m-4">
+                        <select>
+                            <optgroup label="Test">
+                                <option value="test">test</option>
+                            </optgroup>
+                        </select>
+                    </li>
+                    <li class="nav-item m-4">
+                        <select>
+                            <optgroup label="Test">
+                                <option value="test">test</option>
+                            </optgroup>
+                        </select>
+                    </li>
+                    <li class="nav-item m-4">
+                        <select>
+                            <optgroup label="Test">
+                                <option value="test">test</option>
+                            </optgroup>
+                        </select>
+                    </li>
+                    <li class="nav-item m-4">
+                        <select>
+                            <optgroup label="Test">
+                                <option value="test">test</option>
+                            </optgroup>
+                        </select>
+                    </li>
+                    <li class="nav-item m-4">
+                        <select>
+                            <optgroup label="Test">
+                                <option value="test">test</option>
+                            </optgroup>
+                        </select>
+                    </li>
+                </ul>
+        </nav>
+        <main role="main" class="col-10">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div id="cielab-view"></div>
 
-        // event emmited when receiving message 
-        var ws = new WebSocket('ws://localhost:40510');
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div id="barchart-view"></div>
 
-        ws.onopen = () => {
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div id="volume-view"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div id="graph-view"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<div id="tooltip"></div>
+<script type="text/javascript" src="static/js/cielab.js"></script>
+<script type="text/javascript" src="static/js/volume.js"></script>
+<script type="text/javascript" src="static/js/graph.js"></script>
+<script type="text/javascript">
+    var CIELAB = '#cielab-view',
+        VOLUME = '#volume-view',
+        GRAPH = '#graph-view',
+        TOOLTIP = '#tooltip'
 
-            const parameters = JSON.stringify({
-                century: 17.0,
-                artist_nationality: "France",
-                artwork_type: "genre painting",
-                general_type: "painting",
-    		})
+    var data_json = 'static/data/example.json';
+    cielab_view(data_json);
+    volume_view(data_json);
+    graph_view(data_json);
 
-            {{!-- school: None, --}}
-            ws.send(parameters)
-        }
+    // event emmited when receiving message 
+    var ws = new WebSocket('ws://localhost:40510');
 
-        ws.onmessage = (ev) => {
-            console.log(ev);
-            data_json = ev.data
-            data_json = JSON.parse(ev.data)
-            console.log(data_json)
+    ws.onopen = () => {
 
-            {{!-- dashboard_view('#dashboard');
-            cielab_view(data_json, '#chart2');
-            volume_view(data_json, '#chart4');
-            graph_view(data_json, '#chart5', '#graph-tooltip') --}}
-        }
+        const parameters = JSON.stringify({
+            century: 17.0,
+            artist_nationality: "France",
+            artwork_type: "genre painting",
+            general_type: "painting",
+        })
 
-        
+        ws.send(parameters);
+    }
 
-    </script>
-</main>
+    ws.onmessage = (ev) => {
+        console.log(ev);
+        data_json = ev.data;
+        data_json = JSON.parse(ev.data);
+        console.log(data_json);
+
+        cielab_view(data_json);
+        volume_view(data_json);
+        update_graph(data_json);
+    }
+</script>
