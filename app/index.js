@@ -56,20 +56,20 @@ app.get('/', (req, res) => {
 
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
-        console.log('received: %s', message)
+        console.log('Received: %s', message)
         parameters = JSON.parse(message);
         sql = selection.construct_sql_query(parameters);
-        console.log(sql)
-        
+        console.log("SQL query: %s", sql)
         db.query(sql, function(err, results, fields) {
             if (err) throw err;
-            
-            graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);    
-            ws.send(JSON.stringify(graph_data))
+        console.log("Results: %s", JSON.stringify(results))
+        // graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
+        // ws.send(JSON.stringify(graph_data))
+        ws.send(JSON.stringify(results))
         })
 
     })
-    
+
 })
 app.listen(port, () => console.log(`App available on http://localhost:${port}`));
 
