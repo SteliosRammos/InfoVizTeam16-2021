@@ -2,94 +2,167 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script src="jquery.min.js"></script>
+    <script   src="https://code.jquery.com/jquery-3.6.0.min.js"   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="   crossorigin="anonymous"></script>
   </head>
   <body>
   	<label>Century:</label>
   	<select id='century', name='century'>
         <option value="">--select--</option>
-  	    <option value="0">the 8th century</option>
-  	    <option value="1">the 11th century</option>
-  	    <option value="2">the 12th century </option>
-  	    <option value="3">the 13th century</option>
-  	    <option value="4">the 14th century</option>
-  	    <option value="5">the 15th century</option>
-  	    <option value="6">the 16th century</option>
-  	    <option value="7">the 17th century</option>
-  	    <option value="8">the 18th century</option>
-  	    <option value="9">the 19th century</option>
-  	    <option value="10">the 20th century</option>
-  	    <option value="11">the 21st century</option>
-  	    <option value="12">the unknown century</option>
+  	    <option value="-4">BC 4th century</option>
+  	    <option value="-3">BC 3rd century</option>
+  	    <option value="9">9th century </option>
+  	    <option value="11">11th century</option>
+  	    <option value="13">13th century</option>
+  	    <option value="14">14th century</option>
+  	    <option value="15">15th century</option>
+  	    <option value="16">16th century</option>
+  	    <option value="17">17th century</option>
+  	    <option value="18">18th century</option>
+  	    <option value="19">19th century</option>
+  	    <option value="20">20th century</option>
+  	    <option value="21">21st century</option>
+  	    <option value="unknown">unknown century</option>
   	</select><br/><br/>
 
     <label>Country:</label> 
-  	<select id='country', name="country">
+  	<select id='artist_nationality', name="artist_nationality">
       <option value="">--select--</option>
-  		<option value="0">Spain</option>
-  		<option value="1">America</option>
-  		<option value="2">Italy</option>
-  		<option value="3">France</option>
-  		<option value="4">China</option>
-  		<option value="5">Japan</option>
-  		<option value="6">England</option>
-  		<option value="7">Netherlands</option>
-  		<option value="8">Germany</option>
-  		<option value="9">Austria</option>
+  		<option value="Argentina">Argentina</option>
+  		<option value="Armenia">Armenia</option>
+  		<option value="Australia">Australia</option>
+  		<option value="Austria">Austria</option>
+  		<option value="Belarus">Belarus</option>
+  		<option value="Belgium">Belgium</option>
+  		<option value="Bohemian">Bohemian</option>
+  		<option value="Brazil">Brazil</option>
+  		<option value="Bulgaria">Bulgaria</option>
+  		<option value="Canada">Canada</option>
+  		<option value="Chile">Chile</option>
+  		<option value="China">China</option>
+  		<option value="Colombia">Colombia</option>
+  		<option value="Cuba">Cuba</option>
+  		<option value="Czech Republic">Czech Republic</option>
+  		<option value="Denmark">Denmark</option>
+  		<option value="Ecuador">Ecuador</option>
+  		<option value="Finland">Finland</option>
+  		<option value="France">France</option>
+  		<option value="Georgia">Georgia</option>
+  		<option value="Germany">Germany</option>
+  		<option value="Ghana">Ghana</option>
+  		<option value="Greece">Greece</option>
+  		<option value="Guatemala">Guatemala</option>
+  		<option value="Hungary">Hungary</option>
+  		<option value="India">India</option>
+  		<option value="Iran">Iran</option>
+  		<option value="Iraq">Iraq</option>
+  		<option value="Ireland">Ireland</option>
+  		<option value="Israel">Israel</option>
+  		<option value="Italy">Italy</option>
+  		<option value="Jamaica">Jamaica</option>
+  		<option value="Japan">Japan</option>
+  		<option value="Latin American">Latin American</option>
+  		<option value="Latvia">Latvia</option>
+  		<option value="Linthuania">Linthuania</option>
+  		<option value="Malta">Malta</option>
+  		<option value="Mexico">Mexico</option>
+  		<option value="Netherlands">Netherlands</option>
+  		<option value="New Zealand">New Zealand</option>
+  		<option value="Nigeria">Nigeria</option>
+  		<option value="Norway">Norway</option>
+  		<option value="Peru">Peru</option>
+  		<option value="Philippines">Philippines</option>
+  		<option value="Poland">Poland</option>
+  		<option value="Portugal">Portugal</option>
+  		<option value="Puerto Rico">Puerto Rico</option>
+  		<option value="Romania">Romania</option>
+  		<option value="Russia">Russia</option>
+  		<option value="South Africa">South Africa</option>
+  		<option value="South Korea">South Korea</option>
+  		<option value="Spain">Spain</option>
+  		<option value="Sudan">Sudan</option>
+  		<option value="Sweden">Sweden</option>
+  		<option value="Switzerland">Switzerland</option>
+  		<option value="Thailand">Thailand</option>
+  		<option value="Turkey">Turkey</option>
+  		<option value="Ukraine">Ukraine</option>
+  		<option value="United Kingdom">United Kingdom</option>
+  		<option value="United States">United States</option>
+  		<option value="Uruguay">Uruguay</option>
+  		<option value="Venezuela">Venezuela</option>
+  		<option value="Vietnam">Vietnam</option>
   	</select><br/><br/>
     
     <label>Artwork Type:</label> 
   	<select id='artwork_type', name="artwork_type">
       <option value="">--select--</option>
-  		<option value="0">Abstract</option>
-  		<option value="1">Animal Painting</option>
-  		<option value="2">Architecture</option>
-  		<option value="3">Audio</option>
-  		<option value="4">Bijinga</option>
-  		<option value="5">Book Illustration</option>
-  		<option value="6">Calligraphy</option>
-  		<option value="7">Capriccio</option>
-  		<option value="8">Ceramics</option>
-  		<option value="9">Cityscape</option>
-  		<option value="10">Costumes</option>
-  		<option value="11">Design</option>
-  		<option value="12">Drawings</option>
-  		<option value="13">Emblem Pictura</option>
-  		<option value="14">Enamels-basse Taille</option>
-  		<option value="15">Facsimile</option>
-  		<option value="16">Calligraphy</option>
-  		<option value="17">Film</option>
-  		<option value="18">Flower Painting</option>
-  		<option value="19">Genre Painting</option>
-  		<option value="20">Glass</option>
-  		<option value="21">Graphics</option>
-  		<option value="22">History Painting</option>
-  		<option value="23">Illumination</option>
-  		<option value="24">Illustrated Book</option>
-  		<option value="25">Illustration</option>
-  		<option value="26">Installation</option>
-  		<option value="27">Interior</option>
-  		<option value="28">Ivories</option>
-  		<option value="29">Landscape</option>
-  		<option value="30">Literary Painting</option>
-  		<option value="31">Manuscript Illumination</option>
-  		<option value="32">Metalwork</option>
-  		<option value="33">Mies Van der Rohe Archive</option>
-  		<option value="34">Mythological Painting</option>
-  		<option value="35">Nude painting</option>
-  		<option value="36">Painting</option>
-  		<option value="37">Photo</option>
-  		<option value="38">Photograph</option>
-  		<option value="39">Portrait</option>
-  		<option value="40">Poster</option>
-  		<option value="41">Print</option>
-  		<option value="42">Printers Device</option>
-  		<option value="43">Sculpture</option>
-  		<option value="44">Self-portrait</option>
-  		<option value="45">Sketch and study</option>
-  		<option value="46">Stucco</option>
-  		<option value="47">Symbolic Painting</option>
-  		<option value="48">Video</option>
+  		<option value="abstract">Abstract</option>
+  		<option value="advertisement">Advertisement</option>
+  		<option value="allegorical painting">Allegorical Painting</option>
+  		<option value="architecture">Architecture</option>
+  		<option value="audio">Audio</option>
+  		<option value="battle painting">Battle Painting</option>
+  		<option value="bijinga">Bijinga</option>
+  		<option value="bird-and-flower painting">Bird-and-flower Painting</option>
+  		<option value="book illustration">Book Illustration</option>
+  		<option value="books">Books</option>
+  		<option value="calligraphy">Calligraphy</option>
+  		<option value="capriccio">Capriccio</option>
+  		<option value="caricature">Caricature</option>
+  		<option value="ceramics">Ceramics</option>
+  		<option value="cityscape">Cityscape</option>
+  		<option value="cloudscape">Cloudscape</option>
+  		<option value="design">Design</option>
+  		<option value="drawings">Drawings</option>
+  		<option value="emblem pictura">Emblem Pictura</option>
+  		<option value="facsimile">Facsimile</option>
+  		<option value="figurative">Figurative</option>
+  		<option value="film">Film</option>
+  		<option value="flower painting">Flower Painting</option>
+  		<option value="furniture">Furniture</option>
+  		<option value="genre painting">Genre Painting</option>
+  		<option value="glass">Glass</option>
+  		<option value="graffiti">Graffiti</option>
+  		<option value="graphics">Graphics</option>
+  		<option value="history painting">History Painting</option>
+  		<option value="horology">Horology</option>
+  		<option value="illumination">Illumination</option>
+  		<option value="illustrated book">Illustrated Book</option>
+  		<option value="illustration">Illustration</option>
+  		<option value="installation">Installation</option>
+  		<option value="interior">Interior</option>
+  		<option value="landscape">Landscape</option>
+  		<option value="literary painting">Literary Painting</option>
+  		<option value="manuscript illumination">Manuscript Illumination</option>
+  		<option value="marina">Marina</option>
+  		<option value="medals and plaquettes">Medals and Plaquettes</option>
+  		<option value="metalwork">Metalwork</option>
+  		<option value="miniature">Miniature</option>
+  		<option value="mythological painting">Mythological Painting</option>
+  		<option value="nude painting">Nude Painting</option>
+  		<option value="painting">Painting</option>
+  		<option value="pastorale">Pastorale</option>
+  		<option value="performance">Performance</option>
+  		<option value="photo">Photo</option>
+  		<option value="photograph">Photograph</option>
+  		<option value="portrait">Portrait</option>
+  		<option value="poster">Poster</option>
+  		<option value="print">Print</option>
+  		<option value="religious painting">Religious Painting</option>
+  		<option value="sculpture">Sculpture</option>
+  		<option value="self-portrait">Self-portrait</option>
+  		<option value="sketch and study">Sketch and study</option>
+  		<option value="stained-glass">Stained-glass</option>
+  		<option value="still life">Still life</option>
+  		<option value="symbolic painting">Symbolic Painting</option>
+  		<option value="tapestry">Tapestry</option>
+  		<option value="texiles">Textiles</option>
+  		<option value="transparencies">Transparencies</option>
+  		<option value="vanitas">Vanitas</option>
+  		<option value="vases">Vases</option>
+  		<option value="veduta">Veduta</option>
+  		<option value="video">Video</option>
+  		<option value="wildlife painting">Wildlife Painting</option>
+  		<option value="woodwork">Woodwork</option>
   		<option value="49">Others</option>
   		<option value="50">Unknown</option>
   	</select><br/><br/>
@@ -97,102 +170,74 @@
   	<label>School:</label> 
   	<select id='school', name="school">
       <option value="">--select--</option>
-  		<option value="0">American</option>
-  		<option value="1">Austrian</option>
-  		<option value="2">Catalan</option>
-  		<option value="3">Chinese</option>
-  		<option value="4">Danish</option>
-  		<option value="5">Deutschland</option>
-  		<option value="6">Dutch</option>
-  		<option value="7">English</option>
-  		<option value="8">Flemish</option>
-  		<option value="9">France</option>
-  		<option value="10">German</option>
-  		<option value="11">France</option>
-  		<option value="12">Britain</option>
-  		<option value="13">Hungarian</option>
-  		<option value="14">Italian</option>
-  		<option value="15">Japanese</option>
-  		<option value="16">Modern</option>
-  		<option value="17">Unknown</option>
+  		<option value="american|new york">American</option>
+  		<option value="austrian|melbourne|sydney">Austrian</option>
+  		<option value="belgian">Belgian</option>
+  		<option value="bohemian">Bohemian</option>
+  		<option value="british|edinburgh|edinburgh and london|glasgow|london|london & new york|
+  		london; guildfor [printed]|manchester|newcastle upon tyne|oxford">British</option>
+  		<option value="budapest">Budapest</option>
+  		<option value="chester">Chester</option>
+  		<option value="chinese">Chinese</option>
+  		<option value="danish">Danish</option>
+  		<option value="Deutschland, Europe">Deutschland</option>
+  		<option value="dutch|Nederland|netherlandish">Dutch</option>
+  		<option value="english">English</option>
+  		<option value="flemish">Flemish</option>
+  		<option value="french|paris">French</option>
+  		<option value="geneve">Geneve</option>
+  		<option value="german|munchen">German</option>
+  		<option value="greek">Greek</option>
+  		<option value="hungarian">Hungarian</option>
+  		<option value="italian|Italia">Italian</option>
+  		<option value="japanese">Japanese</option>
+  		<option value="modern">Modern</option>
+  		<option value="norwegian">Norwegian</option>
+  		<option value="polish">Polish</option>
+  		<option value="russian">Russian</option>
+  		<option value="Scotland, UK|scottish">Scotland</option>
+  		<option value="spanish">Spanish</option>
+  		<option value="swedish|swiss">Swedish</option>
+  		<option value="spanish">Spanish</option>
+  		<option value="toronto">Toronto</option>
+  		<option value="unknown">Unknown</option>
+  		<option value="others">Others</option>
   	</select><br/><br/>
 
   	<label>General Type:</label> 
   	<select id='general_type', name="general_type">
       <option value="">--select--</option>
-  		<option value="0">Craft</option>
-  		<option value="1">Design</option>
-  		<option value="2">Drawing</option>
-  		<option value="3">Installation</option>
-  		<option value="4">New Media</option>
-  		<option value="5">Painting</option>
-  		<option value="6">Photograph</option>
-  		<option value="7">Print</option>
-  		<option value="8">Sculpture</option>
-  		<option value="9">Textile</option>
-  		<option value="10">Unknown</option>
-  	</select><br/><br/>
-    <button type="submit" >Sumbit</button><br>
+  		<option value="craft">Craft</option>
+  		<option value="design">Design</option>
+  		<option value="drawing">Drawing</option>
+  		<option value="installation">Installation</option>
+  		<option value="mixed media">Mixed Media</option>
+  		<option value="new media">New Media</option>
+  		<option value="painting">Painting</option>
+  		<option value="performance art">Performance Art</option>
+  		<option value="photograph">Photograph</option>
+  		<option value="print">Print</option>
+  		<option value="sculpture">Sculpture</option>
+  		<option value="textile">Textile</option>
+  		<option value="weapons and armor">Weapons and Armor</option>
+  		<option value="unknown">Unknown</option>
+  	</select>
+
+
   <script type="text/javascript">
-    function showselected(){
-      var centurySelected = $("#century option: selected").val();
-      var countrySelected = $("#country option: selected").val();
-      var artwork_typeSelected = $("artwork_type option: selected").val();
-      var schoolSelected = $("school option: selected").val();
-      var general_typeSelected = $("general_type option: selected").val();
+	var parameters = {};
+	var myOptions = $('select');
 
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+centurySelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
+	myOptions.on('change', function() {
+		myOptions.each(function() {
+			parameters[this.id] = String(this.value);
+		});
 
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+countrySelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+artwork_typeSelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+schoolSelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "...",
-        data: "id="+general_typeSelected,
-        success: function(data){
-          $('#output').html(data);
-        }
-      })
-    }
+		// do what ever you want with 'parameters'
+		console.log(parameters);
+	});
+	
   </script>
-
 
 
   </body>
