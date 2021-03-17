@@ -160,10 +160,9 @@ function cielab_view(data_json) {
 
     // Something like this whenever selection is updated
     function on_update() {
-        d3.json(data_json).then((data) => {
-            pointData = d3.values(data.cielab);
-            updatePoints(point3d(pointData));
-        });
+        data = data_json
+        pointData = d3.values(data.cielab);
+        updatePoints(point3d(pointData));
     };
 
     function init() {
@@ -186,10 +185,9 @@ function cielab_view(data_json) {
 
         initAxes(axes);
 
-        d3.json(data_json).then((data) => {
-            pointData = d3.values(data.cielab);
-            updatePoints(point3d(pointData));
-        });
+        data = data_json
+        pointData = d3.values(data.cielab);
+        updatePoints(point3d(pointData));
     };
 
     function dragStart() {

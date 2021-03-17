@@ -76,15 +76,23 @@ function volume_view(data_json) {
     };
 
     function init() {
-        d3.json(data_json).then((data) => {
-            all_data = data;
-            cubeData = [];
-            var max = Math.max(...d3.values(data.frequencies.colors));
-            d3.entries(data.frequencies.colors).forEach((d) => {
-                cubeData.push(makeCube((d.value * (1 - minCubeSize) / max + minCubeSize) / 2, d.key));
-            });
-            updateCubes(cubes3d(cubeData), 1000);
+        data = data_json
+        // d3.json(data_json).then((data) => {
+        //     all_data = data;
+        //     cubeData = [];
+        //     var max = Math.max(...d3.values(data.frequencies.colors));
+        //     d3.entries(data.frequencies.colors).forEach((d) => {
+        //         cubeData.push(makeCube((d.value * (1 - minCubeSize) / max + minCubeSize) / 2, d.key));
+        //     });
+        //     updateCubes(cubes3d(cubeData), 1000);
+        // });
+        all_data = data;
+        cubeData = [];
+        var max = Math.max(...d3.values(data.frequencies.colors));
+        d3.entries(data.frequencies.colors).forEach((d) => {
+            cubeData.push(makeCube((d.value * (1 - minCubeSize) / max + minCubeSize) / 2, d.key));
         });
+        updateCubes(cubes3d(cubeData), 1000);
     };
 
     function makeCube(size, key) {
