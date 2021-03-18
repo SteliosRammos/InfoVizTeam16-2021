@@ -13,7 +13,7 @@
             <body>
                 <label>Century:</label>
                 <select id='century' , name='century' , onchange="submitSelected()">
-                    <option value=century>All</option>
+                    <option value="">All</option>
                     <option value=-4.0>the 4th century BCE</option>
                     <option value=-3.0>the 3th century BCE</option>
                     <option value=9.0>the 9th century</option>
@@ -33,7 +33,7 @@
 
                 <label>Country:</label>
                 <select id='country' , name="country" , onchange="submitSelected()">
-                    <option value=country>All</option>
+                    <option value="">All</option>
                     <option value="Spain">Spain</option>
                     <option value="1">America</option>
                     <option value="2">Italy</option>
@@ -48,7 +48,7 @@
 
                 <label>Artwork Type:</label>
                 <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
-                    <option value=artwork_type>All</option>
+                    <option value="">All</option>
                     <option value="abstract">Abstract</option>
                     <option value="advertisement">Advertisement</option>
                     <option value="aerophone-lip">Aerophone-lip</option>
@@ -147,7 +147,7 @@
 
                 <label>School:</label>
                 <select id='school' , name="school" , onchange="submitSelected()">
-                    <option value=school>All</option>
+                    <option value="">All</option>
                     <option value=unknown>Unknown</option>4
                     <option value="belgian">Belgian</option>
                     <option value="Italia">Italia</option>
@@ -213,7 +213,7 @@
 
                 <label>General Type:</label>
                 <select id='general_type' , name="general_type" , onchange="submitSelected()">
-                    <option value=general_type>All</option>
+                    <option value="">All</option>
                     <option value="craft">Craft</option>
                     <option value="design">Design</option>
                     <option value="drawing">Drawing</option>
@@ -295,10 +295,10 @@
     function submitSelected() {
 
         const parameters = {
-            //century: document.getElementById('century').value, // We have to modify this a bit
-            //country : document.getElementById('country').value, // We don't have a country field in the db!
-            //artwork_type: document.getElementById('artwork_type').value,
-            //school: document.getElementById('school').value,
+            century: document.getElementById('century').value, // We have to modify this a bit
+            country : document.getElementById('country').value, // We don't have a country field in the db!
+            artwork_type: document.getElementById('artwork_type').value,
+            school: document.getElementById('school').value,
             general_type: document.getElementById('general_type').value,
             creation_year: date_range
         }
