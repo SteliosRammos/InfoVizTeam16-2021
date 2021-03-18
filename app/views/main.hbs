@@ -49,10 +49,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <div id="barchart-view"></div>
+                            <div id="barchart-view" class="barchart-view" style="width: 700px; height: 540px; overflow-y: scroll"></div>
 
                         </div>
                     </div>
@@ -78,17 +78,21 @@
     </div>
 </div>
 <div id="tooltip"></div>
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 <script type="text/javascript" src="static/js/cielab.js"></script>
+<script type="text/javascript" src="static/js/barchart.js"></script>
 <script type="text/javascript" src="static/js/volume.js"></script>
 <script type="text/javascript" src="static/js/graph.js"></script>
 <script type="text/javascript">
     var CIELAB = '#cielab-view',
+        BARCHART = '#barchart-view',
         VOLUME = '#volume-view',
         GRAPH = '#graph-view',
         TOOLTIP = '#tooltip'
 
     var data_json = 'static/data/example.json';
     cielab_view(data_json);
+    barchart_view(data_json);
     volume_view(data_json);
     graph_view(data_json);
 </script>
