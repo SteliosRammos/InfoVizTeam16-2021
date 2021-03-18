@@ -63,9 +63,9 @@ wss.on('connection', function (ws) {
         db.query(sql, function(err, results, fields) {
             if (err) throw err;
         console.log("Results: %s", JSON.stringify(results))
-        // graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
-        // ws.send(JSON.stringify(graph_data))
-        ws.send(JSON.stringify(results))
+        graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
+        ws.send(JSON.stringify(graph_data))
+        // ws.send(JSON.stringify(results))
         })
 
     })
