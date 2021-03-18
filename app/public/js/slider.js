@@ -1,3 +1,4 @@
+
 /*jslint browser: true */
 /*jslint this */
 
@@ -30,7 +31,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
     var container = d3.select(containerSelector);
     var playing = false;
     var resumePlaying = false; // Used by drag-events to resume playing on release
-    var playingRate = 50;
+    var playingRate = 100;
     var containerHeight = container.node().offsetHeight;
 
     // Set up play button if requested
