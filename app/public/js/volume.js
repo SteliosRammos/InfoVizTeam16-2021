@@ -2,6 +2,7 @@ var volume_width = 720;
 var volume_height = 540;
 var volume_globals = {
     'all_data': null,
+    'show_grid': true,
     'cubeData': [],
     'origin': [volume_width / 2, volume_height / 2],
     'scale': 60,
@@ -12,15 +13,15 @@ var volume_globals = {
 };
 
 function volume_view() {
-
     const help_text = 'Colors\' frequency: this graph shows the frequency of colors in your selection. Each cube represents a range of colors in the RGB space and is scaled according to the frequency of colors in that cube, relative to other cubes.';
-    var help_button = d3.select(VOLUME).append('span')
-    .attr('class', "material-icons-outlined")
-    .text('help_outline')
-    .on('mouseover', () => {  show_help(help_text); })
-    .on('mouseout', () => { hide_help(); });
+    d3.select(VOLUME).append('span')
+        .attr('class', "material-icons-outlined")
+        .text('help_outline')
+        .on('mouseover', () => {  show_help(help_text); })
+        .on('mouseout', () => { hide_help(); });
 
-    d3.select(VOLUME).append('svg')
+    d3.select(VOLUME).append('button').style('margin-left', '10px').text('Grid').on('click', toggle_grid);
+    var g = d3.select(VOLUME).append('svg')
         .attr('width', volume_width)
         .attr('height', volume_height)
         .call(d3.drag()
@@ -30,6 +31,58 @@ function volume_view() {
         .append('g');
 
     var mx, my, mouseX, mouseY;
+
+    var grid3d = d3._3d()
+        .shape('LINE_STRIP')
+        .origin(volume_globals.origin)
+        .rotateY(volume_globals.startAngle)
+        .rotateX(-volume_globals.startAngle)
+        .scale(volume_globals.scale);
+
+    var gridData = [];
+
+    var offset = Math.floor(volume_globals.gridSize / 2);
+    var min = -offset - 0.5,
+        max = volume_globals.gridSize - offset - 0.5;
+    var dash = 0.1;
+    for (let x = min; x <= max; x++) {
+        for (let y = min; y <= max; y++) {
+            for (let z = min; z <= max; z++) {
+                if ((x == min || x == max) + (y == min || y == max) + (z == min || z == max) >= 2) {
+                    gridData.push([
+                        [x - (x == min ? 0 : dash), y, z],
+                        [x + (x == max ? 0 : dash), y, z]
+                    ]);
+                    gridData.push([
+                        [x, y - (y == min ? 0 : dash), z],
+                        [x, y + (y == max ? 0 : dash), z]
+                    ]);
+                    gridData.push([
+                        [x, y, z - (z == min ? 0 : dash)],
+                        [x, y, z + (z == max ? 0 : dash)]
+                    ]);
+                }
+            };
+        };
+    };
+
+    init_grid(grid3d(gridData));
+
+    function init_grid(grid) {
+        var gridLine = g.selectAll('path.gridLine').data(grid);
+
+        gridLine.enter()
+            .append('path')
+            .attr('class', '_3d gridLine')
+            .merge(gridLine)
+            .attr('stroke', 'black')
+            .attr('stroke-width', .5)
+            .attr('d', grid3d.draw);
+    };
+
+    function update_grid(grid) {
+        g.selectAll('path.gridLine').data(grid).attr('d', grid3d.draw);
+    };
 
     function dragStart() {
         mx = d3.event.x;
@@ -42,11 +95,24 @@ function volume_view() {
         volume_globals.beta = (d3.event.x - mx + mouseX) * Math.PI / 230;
         volume_globals.alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * (-1);
         update_volume(null, 0);
+        update_grid(grid3d
+            .rotateY(volume_globals.beta + volume_globals.startAngle)
+            .rotateX(volume_globals.alpha - volume_globals.startAngle)(gridData));
     };
 
     function dragEnd() {
         mouseX = d3.event.x - mx + mouseX;
         mouseY = d3.event.y - my + mouseY;
+    };
+};
+
+function toggle_grid() {
+    if (volume_globals.show_grid) {
+        volume_globals.show_grid = false;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'none');
+    } else {
+        volume_globals.show_grid = true;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'inline');
     };
 };
 
