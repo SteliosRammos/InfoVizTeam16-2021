@@ -1,114 +1,87 @@
-function volume_view(data_json) {
-    var w = 720;
-    var h = 540;
+var volume_width = 720;
+var volume_height = 540;
+var volume_globals = {
+    'all_data': null,
+    'show_grid': true,
+    'cubeData': [],
+    'origin': [volume_width / 2, volume_height / 2],
+    'scale': 60,
+    'alpha': 0,
+    'beta': 0,
+    'startAngle': Math.PI / 4,
+    'gridSize': 5
+};
 
-    var all_data;
+function volume_view() {
+    const help_text = 'Colors\' frequency: this graph shows the frequency of colors in your selection. Each cube represents a range of colors in the RGB space and is scaled according to the frequency of colors in that cube, relative to other cubes.';
+    d3.select(VOLUME).append('span')
+        .attr('class', "material-icons-outlined")
+        .text('help_outline')
+        .on('mouseover', () => {  show_help(help_text); })
+        .on('mouseout', () => { hide_help(); });
 
-    var origin = [w / 2, h / 2],
-        scale = 60,
-        gridSize = 5,
-        minCubeSize = 0.1,
-        cubeData = [],
-        alpha = 0,
-        beta = 0,
-        startAngle = Math.PI / 4;
-
-    var svg = d3.select(VOLUME).append('svg')
-        .attr('width', w)
-        .attr('height', h)
+    d3.select(VOLUME).append('button').style('margin-left', '10px').text('Grid').on('click', toggle_grid);
+    var g = d3.select(VOLUME).append('svg')
+        .attr('width', volume_width)
+        .attr('height', volume_height)
         .call(d3.drag()
             .on('drag', dragged)
             .on('start', dragStart)
-            .on('end', dragEnd));
-
-    var g = svg.append('g');
+            .on('end', dragEnd))
+        .append('g');
 
     var mx, my, mouseX, mouseY;
 
-    var cubes3d = d3._3d()
-        .shape('CUBE')
-        .x((d) => { return d.x; })
-        .y((d) => { return d.y; })
-        .z((d) => { return d.z; })
-        .origin(origin)
-        .rotateY(startAngle)
-        .rotateX(-startAngle)
-        .scale(scale);
-    
-    function updateCubes(data, tt) {
-        var cubes = g.selectAll('g.cube').data(data, (d) => { return d.id });
+    var grid3d = d3._3d()
+        .shape('LINE_STRIP')
+        .origin(volume_globals.origin)
+        .rotateY(volume_globals.startAngle)
+        .rotateX(-volume_globals.startAngle)
+        .scale(volume_globals.scale);
 
-        var ce = cubes.enter()
-            .append('g')
-            .attr('class', 'cube')
-            .attr('fill', (d) => { return d.color; })
-            .attr('stroke', (d) => { return d3.color(d.color).darker(1); })
-            .merge(cubes)
-            .sort(cubes3d.sort)
-            .on('mouseover', function (d) {
-                d3.select(this)
-                    .attr('stroke', d3.color(d.color).brighter(1))
-                    .attr('stroke-width', 2);
-            })
-            .on('mouseout', function (d) {
-                d3.select(this)
-                    .attr('stroke', d3.color(d.color).darker(1))
-                    .attr('stroke-width', 1);
-            })
-            .on('click', function (d) {
-                update_graph(graph_data_for_cube(all_data, d.id));
-            });
+    var gridData = [];
 
-        var faces = cubes.merge(ce)
-            .selectAll('path.face')
-            .data((d) => { return d.faces; }, (d) => { return d.face; });
-
-        faces.enter()
-            .append('path')
-            .attr('class', 'face')
-            .attr('fill-opacity', 0.5)
-            .classed('_3d', true)
-            .merge(faces)
-            .transition().duration(tt)
-            .attr('d', cubes3d.draw);
-
-        ce.selectAll('._3d').sort(d3._3d().sort);
-    };
-
-    function init() {
-        d3.json(data_json).then((data) => {
-            all_data = data;
-            cubeData = [];
-            var max = Math.max(...d3.values(data.frequencies.colors));
-            d3.entries(data.frequencies.colors).forEach((d) => {
-                cubeData.push(makeCube((d.value * (1 - minCubeSize) / max + minCubeSize) / 2, d.key));
-            });
-            updateCubes(cubes3d(cubeData), 1000);
-        });
-    };
-
-    function makeCube(size, key) {
-        var offset = Math.floor(gridSize / 2);
-        var xyz = key.split('_').map(n => parseInt(n) - offset);
-        var x = xyz[0];
-        var y = xyz[1];
-        var z = xyz[2];
-        var cube = [
-            { x: x - size, y: -y + size, z: z + size }, // FRONT TOP LEFT
-            { x: x - size, y: -y - size, z: z + size }, // FRONT BOTTOM LEFT
-            { x: x + size, y: -y - size, z: z + size }, // FRONT BOTTOM RIGHT
-            { x: x + size, y: -y + size, z: z + size }, // FRONT TOP RIGHT
-            { x: x - size, y: -y + size, z: z - size }, // BACK  TOP LEFT
-            { x: x - size, y: -y - size, z: z - size }, // BACK  BOTTOM LEFT
-            { x: x + size, y: -y - size, z: z - size }, // BACK  BOTTOM RIGHT
-            { x: x + size, y: -y + size, z: z - size }, // BACK  TOP RIGHT
-        ];
-        function xyz_to_rgb(d) {
-            return Math.round(255 / gridSize / 2 * (1 + 2 * (d + offset)));
+    var offset = Math.floor(volume_globals.gridSize / 2);
+    var min = -offset - 0.5,
+        max = volume_globals.gridSize - offset - 0.5;
+    var dash = 0.1;
+    for (let x = min; x <= max; x++) {
+        for (let y = min; y <= max; y++) {
+            for (let z = min; z <= max; z++) {
+                if ((x == min || x == max) + (y == min || y == max) + (z == min || z == max) >= 2) {
+                    gridData.push([
+                        [x - (x == min ? 0 : dash), y, z],
+                        [x + (x == max ? 0 : dash), y, z]
+                    ]);
+                    gridData.push([
+                        [x, y - (y == min ? 0 : dash), z],
+                        [x, y + (y == max ? 0 : dash), z]
+                    ]);
+                    gridData.push([
+                        [x, y, z - (z == min ? 0 : dash)],
+                        [x, y, z + (z == max ? 0 : dash)]
+                    ]);
+                }
+            };
         };
-        cube.color = `rgb(${xyz_to_rgb(x)}, ${xyz_to_rgb(y)}, ${xyz_to_rgb(z)})`;
-        cube.id = key;
-        return cube;
+    };
+
+    init_grid(grid3d(gridData));
+
+    function init_grid(grid) {
+        var gridLine = g.selectAll('path.gridLine').data(grid);
+
+        gridLine.enter()
+            .append('path')
+            .attr('class', '_3d gridLine')
+            .merge(gridLine)
+            .attr('stroke', 'black')
+            .attr('stroke-width', .5)
+            .attr('d', grid3d.draw);
+    };
+
+    function update_grid(grid) {
+        g.selectAll('path.gridLine').data(grid).attr('d', grid3d.draw);
     };
 
     function dragStart() {
@@ -119,19 +92,115 @@ function volume_view(data_json) {
     function dragged() {
         mouseX = mouseX || 0;
         mouseY = mouseY || 0;
-        beta = (d3.event.x - mx + mouseX) * Math.PI / 230;
-        alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * (-1);
-        updateCubes(cubes3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)(cubeData), 0);
+        volume_globals.beta = (d3.event.x - mx + mouseX) * Math.PI / 230;
+        volume_globals.alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * (-1);
+        update_volume(null, 0);
+        update_grid(grid3d
+            .rotateY(volume_globals.beta + volume_globals.startAngle)
+            .rotateX(volume_globals.alpha - volume_globals.startAngle)(gridData));
     };
 
     function dragEnd() {
         mouseX = d3.event.x - mx + mouseX;
         mouseY = d3.event.y - my + mouseY;
     };
-
-    init();
 };
 
+function toggle_grid() {
+    if (volume_globals.show_grid) {
+        volume_globals.show_grid = false;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'none');
+    } else {
+        volume_globals.show_grid = true;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'inline');
+    };
+};
+
+function update_volume(data, tt=1000) {
+    var minCubeSize = 0.1;
+
+    if (data !== null) {
+        volume_globals.all_data = data;
+        volume_globals.cubeData = [];
+        var max = Math.max(...d3.values(data.frequencies.colors));
+        d3.entries(data.frequencies.colors).forEach((d) => {
+            volume_globals.cubeData.push(make_cube((d.value * (1 - minCubeSize) / max + minCubeSize) / 2, d.key));
+        });
+    };
+ 
+    var cubes3d = d3._3d()
+        .shape('CUBE')
+        .x((d) => { return d.x; })
+        .y((d) => { return d.y; })
+        .z((d) => { return d.z; })
+        .origin(volume_globals.origin)
+        .rotateY(volume_globals.beta + volume_globals.startAngle)
+        .rotateX(volume_globals.alpha - volume_globals.startAngle)
+        .scale(volume_globals.scale);
+
+    var cubes = d3.select(VOLUME).select('svg').select('g').selectAll('g.cube').data(cubes3d(volume_globals.cubeData), (d) => { return d.id });
+    cubes.exit().transition().duration(tt).attr('opacity', 0).remove()
+    var ce = cubes.enter()
+        .append('g')
+        .attr('class', 'cube')
+        .attr('opacity', 1)
+        .attr('fill', (d) => { return d.color; })
+        .attr('stroke', (d) => { return d3.color(d.color).darker(1); })
+        .merge(cubes)
+        .sort(cubes3d.sort)
+        .on('mouseover', function (d) {
+            d3.select(this)
+                .attr('stroke', d3.color(d.color).brighter(1))
+                .attr('stroke-width', 2);
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .attr('stroke', d3.color(d.color).darker(1))
+                .attr('stroke-width', 1);
+        })
+        .on('click', function (d) {
+            update_graph(graph_data_for_cube(volume_globals.all_data, d.id));
+        });
+
+    var faces = cubes.merge(ce)
+        .selectAll('path.face')
+        .data((d) => { return d.faces; }, (d) => { return d.face; });
+    faces.exit().remove()
+    faces.enter()
+        .append('path')
+        .attr('class', 'face')
+        .attr('fill-opacity', 0.5)
+        .classed('_3d', true)
+        .merge(faces)
+        .transition().duration(tt)
+        .attr('d', cubes3d.draw);
+
+    ce.selectAll('._3d').sort(d3._3d().sort);
+};
+
+function make_cube(size, key) {
+    var offset = Math.floor(volume_globals.gridSize / 2);
+    var xyz = key.split('_').map(n => parseInt(n) - offset);
+    var x = xyz[0];
+    var y = xyz[1];
+    var z = xyz[2];
+    var cube = [
+        { x: x - size, y: -y + size, z: z + size }, // FRONT TOP LEFT
+        { x: x - size, y: -y - size, z: z + size }, // FRONT BOTTOM LEFT
+        { x: x + size, y: -y - size, z: z + size }, // FRONT BOTTOM RIGHT
+        { x: x + size, y: -y + size, z: z + size }, // FRONT TOP RIGHT
+        { x: x - size, y: -y + size, z: z - size }, // BACK  TOP LEFT
+        { x: x - size, y: -y - size, z: z - size }, // BACK  BOTTOM LEFT
+        { x: x + size, y: -y - size, z: z - size }, // BACK  BOTTOM RIGHT
+        { x: x + size, y: -y + size, z: z - size }, // BACK  TOP RIGHT
+    ];
+    function xyz_to_rgb(d) {
+        return Math.round(255 / volume_globals.gridSize / 2 * (1 + 2 * (d + offset)));
+    };
+    cube.color = `rgb(${xyz_to_rgb(x)}, ${xyz_to_rgb(y)}, ${xyz_to_rgb(z)})`;
+    cube.id = key;
+    return cube;
+};
 
 function graph_data_for_cube(data, id) {
     function clab_to_hex(lab) {
