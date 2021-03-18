@@ -29,7 +29,7 @@ var cielab_globals = {
 
 function cielab_view() {
 
-    //init_help();
+    init_help();
     const help_text = 'Selection’s colors: this graph shows the dominant colors of the artworks in your selection. Each dot represents a different color, which appears as some artwork\'s dominant color in your selection.';
 
     var help_button = d3.select(CIELAB).append('span')

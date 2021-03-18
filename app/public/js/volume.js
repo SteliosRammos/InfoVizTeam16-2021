@@ -106,16 +106,6 @@ function volume_view() {
     };
 };
 
-function toggle_grid() {
-    if (volume_globals.show_grid) {
-        volume_globals.show_grid = false;
-        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'none');
-    } else {
-        volume_globals.show_grid = true;
-        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'inline');
-    };
-};
-
 function update_volume(data, tt = 1000) {
     var minCubeSize = 0.1;
 
@@ -176,6 +166,16 @@ function update_volume(data, tt = 1000) {
         .attr('d', cubes3d.draw);
 
     ce.selectAll('._3d').sort(d3._3d().sort);
+};
+
+function toggle_grid() {
+    if (volume_globals.show_grid) {
+        volume_globals.show_grid = false;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'none');
+    } else {
+        volume_globals.show_grid = true;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'inline');
+    };
 };
 
 function make_cube(size, key) {
