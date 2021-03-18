@@ -296,6 +296,19 @@
         ) : (x === y);
     }
 
+      var parameters = {
+        creation_year: { begin: 1614, end: 1714 }
+    }
+
+    function submitSelected() {
+        parameters["artist_nationality"]= document.getElementById('country').value
+        parameters["artwork_type"]= document.getElementById('artwork_type').value
+        parameters["school"]= document.getElementById('school').value
+        parameters["general_type"]= document.getElementById('general_type').value
+
+        ws.send(JSON.stringify(parameters))
+    }
+
     window.onload = () => {
 
         ws.onopen = () => {
@@ -312,17 +325,12 @@
     // event emmited when receiving message 
     var ws = new WebSocket('ws://localhost:40510');
 
-    var parameters = {
-        artist_nationality : document.getElementById('country').value,
-        artwork_type: document.getElementById('artwork_type').value,
-        school: document.getElementById('school').value,
-        general_type: document.getElementById('general_type').value,
-        creation_year: { begin: 1614, end: 1714 }
-    }
-
     ws.onmessage = (ev) => {
         new_data = JSON.parse(ev.data);
-
+        if (typeof data != "undefined") {
+            console.log(data, new_data)
+            console.log(!deepEqual(data, new_data))
+            }
         if (typeof data == "undefined" || !deepEqual(data, new_data)) {
             data = new_data;
             console.log('Updating graphs');
