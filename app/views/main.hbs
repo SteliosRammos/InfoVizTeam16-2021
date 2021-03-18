@@ -290,11 +290,23 @@
 
     function deepEqual(x, y) {
         const ok = Object.keys, tx = typeof x, ty = typeof y;
+
+        /*{{!-- console.log(tx === ty)
+        {{!-- console.log(ok(x).every(key => deepEqual(x[key], y[key]))) --}}
+
+        if (x && y && tx === 'object' && tx === ty) {
+            return ok(x).length === ok(y).length &&
+            ok(x).every(key => deepEqual(x[key], y[key]))
+        } else {
+            return (x === y);
+        } --}} */
+
         return x && y && tx === 'object' && tx === ty ? (
             ok(x).length === ok(y).length &&
             ok(x).every(key => deepEqual(x[key], y[key]))
         ) : (x === y);
     }
+
 
       var parameters = {
         creation_year: { begin: 1614, end: 1714 }
@@ -324,20 +336,22 @@
     
     // event emmited when receiving message 
     var ws = new WebSocket('ws://localhost:40510');
-
+    var data;
+    
     ws.onmessage = (ev) => {
         new_data = JSON.parse(ev.data);
-        if (typeof data != "undefined") {
-            console.log(data, new_data)
-            console.log(!deepEqual(data, new_data))
-            }
-        if (typeof data == "undefined" || !deepEqual(data, new_data)) {
-            data = new_data;
+
+        if (typeof data == "undefined") {
+            data = Object.assign({}, new_data);
+        }
+
+        if (!deepEqual(data, new_data)) {
+            data = Object.assign({}, new_data);
             console.log('Updating graphs');
-            update_cielab(data);
-            update_graph(data);
-            update_volume(data);
-            update_barchart(data);
+            update_cielab(new_data);
+            update_graph(new_data);
+            update_volume(new_data);
+            update_barchart(new_data);
         }
     }
 
