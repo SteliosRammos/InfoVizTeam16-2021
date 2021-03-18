@@ -8,7 +8,6 @@ function update_barchart(data) {
       barwidth = 25
       corner = Math.floor((barwidth/3))
   artistfreq_data = data.frequencies.artists
-  console.log(artistfreq_data)
   artists = Object.keys(artistfreq_data)
   freqs = Object.keys(artistfreq_data).map(
                             function(key){
