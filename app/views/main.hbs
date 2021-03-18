@@ -288,7 +288,21 @@
         TOOLTIP = '#tooltip';
         HELP_TOOLTIP = '#help-tooltip';
 
+    function deepEqual(x, y) {
+        const ok = Object.keys, tx = typeof x, ty = typeof y;
+        return x && y && tx === 'object' && tx === ty ? (
+            ok(x).length === ok(y).length &&
+            ok(x).every(key => deepEqual(x[key], y[key]))
+        ) : (x === y);
+    }
+
     window.onload = () => {
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify(parameters))
+            console.log("Socket open")
+        };
+
         cielab_view();
         volume_view();
         graph_view();
@@ -298,25 +312,6 @@
     // event emmited when receiving message 
     var ws = new WebSocket('ws://localhost:40510');
 
-    ws.onopen = () => {
-
-        const parameters = JSON.stringify({
-            century: 17.0,
-            artist_nationality: "France",
-            //artwork_type: "genre painting",
-            //general_type: "painting",
-        })
-
-        ws.send(parameters);
-    }
-
-    ws.onmessage = (ev) => {
-        console.log(ev);
-        data_json = ev.data;
-        data_json = JSON.parse(ev.data);
-        console.log(data_json);
-    }
-
     var parameters = {
         artist_nationality : document.getElementById('country').value,
         artwork_type: document.getElementById('artwork_type').value,
@@ -325,18 +320,17 @@
         creation_year: { begin: 1614, end: 1714 }
     }
 
-    ws.onopen = () => {
-        ws.send(JSON.stringify(parameters))
-        console.log("Socket open")
-    };
-
     ws.onmessage = (ev) => {
-        data_json = JSON.parse(ev.data);
+        new_data = JSON.parse(ev.data);
 
-        update_cielab(data_json);
-        update_graph(data_json);
-        update_volume(data_json);
-        update_barchart(data_json);
+        if (typeof data == "undefined" || !deepEqual(data, new_data)) {
+            data = new_data;
+            console.log('Updating graphs');
+            update_cielab(data);
+            update_graph(data);
+            update_volume(data);
+            update_barchart(data);
+        }
     }
 
     // Slider
