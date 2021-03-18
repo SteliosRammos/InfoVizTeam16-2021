@@ -16,6 +16,10 @@ const wss = new ws.Server({port: 40510})
 // create application/json parser
 var jsonParser = bodyParser.json()
 
+//initialize the WebSocket server instance
+const ws = require('ws');
+const wss = new ws.Server({ port: 40510 })
+
 const DBConfig = require('./DBConfig');
 const db = DBConfig.db;
 
@@ -66,11 +70,10 @@ wss.on('connection', function (ws) {
         graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
         ws.send(JSON.stringify(graph_data))
         // ws.send(JSON.stringify(results))
-        })
-
     })
 
 })
+
 app.listen(port, () => console.log(`App available on http://localhost:${port}`));
 
 

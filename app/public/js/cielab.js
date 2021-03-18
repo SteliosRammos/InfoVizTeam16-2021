@@ -81,7 +81,7 @@ function cielab_view() {
     };
 
     init_axes(axes);
-    
+
     function init_axes(axes) {
         var xAxis = g.selectAll('path.xAxis').data(axes.xAxis);
         var yAxis = g.selectAll('path.yAxis').data(axes.yAxis);
@@ -199,11 +199,11 @@ function cielab_view() {
     };
 };
 
-function update_cielab(data, tt=500) {    
+function update_cielab(data, tt = 500) {
     if (data !== null) {
         cielab_globals.pointData = d3.values(data.cielab)
     }
- 
+
     var point3d = d3._3d()
         .x((d) => { return d.coords[cielab_globals.xAxis.coord] / cielab_globals.xAxis.step; })
         .y((d) => { return -d.coords[cielab_globals.yAxis.coord] / cielab_globals.yAxis.step; })

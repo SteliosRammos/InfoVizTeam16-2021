@@ -17,7 +17,7 @@ function volume_view() {
     d3.select(VOLUME).append('span')
         .attr('class', "material-icons-outlined")
         .text('help_outline')
-        .on('mouseover', () => {  show_help(help_text); })
+        .on('mouseover', () => { show_help(help_text); })
         .on('mouseout', () => { hide_help(); });
 
     d3.select(VOLUME).append('button').style('margin-left', '10px').text('Grid').on('click', toggle_grid);
@@ -106,17 +106,7 @@ function volume_view() {
     };
 };
 
-function toggle_grid() {
-    if (volume_globals.show_grid) {
-        volume_globals.show_grid = false;
-        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'none');
-    } else {
-        volume_globals.show_grid = true;
-        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'inline');
-    };
-};
-
-function update_volume(data, tt=1000) {
+function update_volume(data, tt = 1000) {
     var minCubeSize = 0.1;
 
     if (data !== null) {
@@ -127,7 +117,7 @@ function update_volume(data, tt=1000) {
             volume_globals.cubeData.push(make_cube((d.value * (1 - minCubeSize) / max + minCubeSize) / 2, d.key));
         });
     };
- 
+
     var cubes3d = d3._3d()
         .shape('CUBE')
         .x((d) => { return d.x; })
@@ -178,6 +168,16 @@ function update_volume(data, tt=1000) {
     ce.selectAll('._3d').sort(d3._3d().sort);
 };
 
+function toggle_grid() {
+    if (volume_globals.show_grid) {
+        volume_globals.show_grid = false;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'none');
+    } else {
+        volume_globals.show_grid = true;
+        d3.select(VOLUME).select('svg').selectAll('path.gridLine').attr('display', 'inline');
+    };
+};
+
 function make_cube(size, key) {
     var offset = Math.floor(volume_globals.gridSize / 2);
     var xyz = key.split('_').map(n => parseInt(n) - offset);
@@ -226,14 +226,14 @@ function graph_data_for_cube(data, id) {
         Math.floor(Math.max(0, Math.min(1, g)) * 255),
         Math.floor((Math.max(0, Math.min(1, b)) * 255))]
 
-        return "#" + ((1 << 24) + (rgb[0]<< 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+        return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
     };
     function calc_average_clab(arr) {
         // Finds the midpoint of the array iteratively
         var average_l = arr[0][0]
         var average_a = arr[0][1]
         var average_b = arr[0][2]
-        for(let counter = 1; counter < arr.length; counter++) {
+        for (let counter = 1; counter < arr.length; counter++) {
             average_l = (average_l + arr[counter][0]) / 2
             average_a = (average_a + arr[counter][1]) / 2
             average_b = (average_b + arr[counter][2]) / 2
@@ -248,7 +248,7 @@ function graph_data_for_cube(data, id) {
         const l2 = c2[0]
         const a2 = c2[1]
         const b2 = c2[2]
-    
+
         // Utility functions added to Math Object
         Math.rad2deg = function (rad) {
             return 360 * rad / (2 * Math.PI);
@@ -262,29 +262,29 @@ function graph_data_for_cube(data, id) {
         const C2 = Math.sqrt(Math.pow(a2, 2) + Math.pow(b2, 2));
         const avgC = (C1 + C2) / 2;
         const G = (1 - Math.sqrt(Math.pow(avgC, 7) / (Math.pow(avgC, 7) + Math.pow(25, 7)))) / 2;
-    
+
         const A1p = a1 * (1 + G);
         const A2p = a2 * (1 + G);
-    
+
         const C1p = Math.sqrt(Math.pow(A1p, 2) + Math.pow(b1, 2));
         const C2p = Math.sqrt(Math.pow(A2p, 2) + Math.pow(b2, 2));
-    
+
         const avgCp = (C1p + C2p) / 2;
-    
+
         let h1p = Math.rad2deg(Math.atan2(b1, A1p));
         if (h1p < 0) {
             h1p = h1p + 360;
         }
-    
+
         let h2p = Math.rad2deg(Math.atan2(b2, A2p));
         if (h2p < 0) {
             h2p = h2p + 360;
         }
-    
+
         const avghp = Math.abs(h1p - h2p) > 180 ? (h1p + h2p + 360) / 2 : (h1p + h1p) / 2;
-    
+
         const T = 1 - 0.17 * Math.cos(Math.deg2rad(avghp - 30)) + 0.24 * Math.cos(Math.deg2rad(2 * avghp)) + 0.32 * Math.cos(Math.deg2rad(3 * avghp + 6)) - 0.2 * Math.cos(Math.deg2rad(4 * avghp - 63));
-    
+
         let deltahp = h2p - h1p;
         if (Math.abs(deltahp) > 180) {
             if (h2p <= h1p) {
@@ -293,28 +293,28 @@ function graph_data_for_cube(data, id) {
                 deltahp -= 360;
             }
         }
-    
+
         const delta_lp = l2 - l1;
         const delta_cp = C2p - C1p;
-    
+
         deltahp = 2 * Math.sqrt(C1p * C2p) * Math.sin(Math.deg2rad(deltahp) / 2);
-    
+
         const Sl = 1 + ((0.015 * Math.pow(avgL - 50, 2)) / Math.sqrt(20 + Math.pow(avgL - 50, 2)));
         const Sc = 1 + 0.045 * avgCp;
         const Sh = 1 + 0.015 * avgCp * T;
-    
+
         const deltaro = 30 * Math.exp(-(Math.pow((avghp - 275) / 25, 2)));
         const Rc = 2 * Math.sqrt(Math.pow(avgCp, 7) / (Math.pow(avgCp, 7) + Math.pow(25, 7)));
         const Rt = -Rc * Math.sin(2 * Math.deg2rad(deltaro));
-    
+
         const kl = 1;
         const kc = 1;
         const kh = 1;
-    
+
         const deltaE = Math.sqrt(Math.pow(delta_lp / (kl * Sl), 2) + Math.pow(delta_cp / (kc * Sc), 2) + Math.pow(deltahp / (kh * Sh), 2) + Rt * (delta_cp / (kc * Sc)) * (deltahp / (kh * Sh)));
-    
+
         return deltaE;
-    };    
+    };
     function hex_to_rgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
@@ -330,7 +330,7 @@ function graph_data_for_cube(data, id) {
             (rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722) / 100.0,
             (rgb[0] * 0.0193 + rgb[1] * 0.1192 + rgb[2] * 0.9505) / 108.883
         ].map((d) => {
-            return d > 0.008856 ?  d ** (0.3333333333333333) : (7.787 * d) + (16 / 116);
+            return d > 0.008856 ? d ** (0.3333333333333333) : (7.787 * d) + (16 / 116);
         });
         return [(116 * xyz[1]) - 16, 500 * (xyz[0] - xyz[1]), 200 * (xyz[1] - xyz[2])];
     };
