@@ -62,7 +62,7 @@ ws.onmessage = (ev) => {
 // Slider
 var slider = createD3RangeSlider(-400, 2021, "#container", true);
 slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
-slider.onChange(function (newRange) {
+slider.onTouchEnd(function (newRange) {
     d3.select("#range-label").html(newRange.begin + " &mdash; " + newRange.end);
     range = slider.range()
     parameters["creation_year"]["begin"] = range["begin"]
