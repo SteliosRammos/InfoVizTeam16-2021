@@ -18,6 +18,7 @@ function graph_view() {
     
     svg.append('g').attr('id', 'links')
     svg.append('g').attr('id', 'nodes')
+    svg.append('g').attr('id', 'link_text')
 
     init_tooltip();
 };
@@ -46,7 +47,8 @@ function update_graph(data) {
         link_data.push({
             'source': 'avg',
             'target': id,
-            'distance': max_dist == 0 ? 1 : artwork_data.dist_from_average / max_dist
+            'distance': max_dist == 0 ? 1 : artwork_data.dist_from_average / max_dist,
+            'true_dist': artwork_data.dist_from_average
         });
     };
 
@@ -72,10 +74,23 @@ function update_graph(data) {
         .attr('stroke-width', 1)
         .merge(links);
 
+    var link_text = svg.select('#link_text').selectAll('text').data(link_data);
+    link_text.exit().remove();
+    var lte = link_text.enter()
+        .append('text')
+        .attr('text-anchor', 'middle')
+        .style('text-shadow', '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white')
+        .text((d) => { return d.true_dist; })
+        .merge(link_text);
+
     var sim = d3.forceSimulation(node_data)
         .force('charge', d3.forceManyBody().strength(function (d, i) { return i == 0 ? -graph_width : 0; }))
         .force('center', d3.forceCenter(graph_width / 2, graph_height / 2))
         .on('tick', () => {
+            lte.attr('x', (d) => { return ((d.source.x + d.target.x) / 2); })
+                .attr('y', (d) => { return ((d.source.y + d.target.y) / 2); })
+                .text((d) => { return d.true_dist; })
+
             le.attr('x1', (d) => { return d.source.x; })
                 .attr('y1', (d) => { return d.source.y; })
                 .attr('x2', (d) => { return d.target.x; })
