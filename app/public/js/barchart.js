@@ -1,4 +1,4 @@
-function barchart_view(data_json) {
+function barchart_view() {
    d3.json(data_json).then((data) => { update_barchart(data); });
 };
 

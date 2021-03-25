@@ -1,4 +1,6 @@
 const selection = require('./selection');
+var isEqual = require('lodash.isequal');
+
 var graph_data_prep = require('./graph_data_prep');
 
 const express = require('express');
@@ -15,10 +17,6 @@ const wss = new ws.Server({port: 40510})
 
 // create application/json parser
 var jsonParser = bodyParser.json()
-
-//initialize the WebSocket server instance
-const ws = require('ws');
-const wss = new ws.Server({ port: 40510 })
 
 const DBConfig = require('./DBConfig');
 const db = DBConfig.db;
@@ -58,20 +56,38 @@ app.get('/', (req, res) => {
 //     }
 // });
 
+// Cache latest graph data
+var last_data;
+
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
-        console.log('Received: %s', message)
+        // console.log('Received: %s', message)
         parameters = JSON.parse(message);
-        sql = selection.construct_sql_query(parameters);
+        sql = selection.construct_graph_data_query(parameters);
         console.log("SQL query: %s", sql)
         db.query(sql, function(err, results, fields) {
             if (err) throw err;
-        console.log("Results: %s", JSON.stringify(results))
-        graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
-        ws.send(JSON.stringify(graph_data))
-        // ws.send(JSON.stringify(results))
-    })
 
+            graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
+            options = selection.get_reduced_options(parameters);
+
+            if (!isEqual(graph_data, last_data)) {
+                console.log('Result data changed!')
+                last_data = graph_data;
+
+                message = {
+                    'unchanged': false,
+                    'options': options,
+                    'graph_data': graph_data
+                }
+    
+                ws.send(JSON.stringify(message))
+            } else {
+                console.log('Same old...')
+                ws.send(JSON.stringify({'unchanged': true}))
+            }
+        })
+    })
 })
 
 app.listen(port, () => console.log(`App available on http://localhost:${port}`));
