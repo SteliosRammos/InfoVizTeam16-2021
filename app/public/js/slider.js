@@ -272,10 +272,10 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
         updateUIFromRange();
     });
 
-    function onChange(callback) {
-        changeListeners.push(callback);
-        return this;
-    }
+    // function onChange(callback) {
+    //     changeListeners.push(callback);
+    //     return this;
+    // }
 
     function onTouchEnd(callback) {
         touchEndListeners.push(callback);
@@ -406,7 +406,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
         range: range,
         startPlaying: startPlaying,
         stopPlaying: stopPlaying,
-        onChange: onChange,
+        // onChange: onChange,
         onTouchEnd: onTouchEnd,
         updateUIFromRange: updateUIFromRange
     };

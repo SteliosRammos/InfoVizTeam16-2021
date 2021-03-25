@@ -1,12 +1,15 @@
-function barchart_view() {
-   //d3.json(data_json).then((data) => { update_barchart(data); });
-};
+// function barchart_view() {
+// //    d3.json(data_json).then((data) => { update_barchart(data); });
+// };
 
 function update_barchart(data) {
-      margin = ({top: 20, right: 20, bottom: 10, left: 150})
-      width = 500;
-      barwidth = 25
-      corner = Math.floor((barwidth/3))
+
+    if (typeof data.frequencies == "undefined") return;
+
+    margin = ({top: 20, right: 20, bottom: 10, left: 150})
+    width = 500;
+    barwidth = 25
+    corner = Math.floor((barwidth/3))
   artistfreq_data = data.frequencies.artists
   artists = Object.keys(artistfreq_data)
   freqs = Object.keys(artistfreq_data).map(
