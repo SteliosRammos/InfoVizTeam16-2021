@@ -199,7 +199,7 @@ function cielab_view() {
     };
 };
 
-function update_cielab(data, tt = 500) {
+function update_cielab(data, tt = 0) {
     if (data !== null) {
         cielab_globals.pointData = d3.values(data.cielab)
     }

@@ -1,5 +1,5 @@
-function barchart_view(data_json) {
-   d3.json(data_json).then((data) => { update_barchart(data); });
+function barchart_view() {
+   //d3.json(data_json).then((data) => { update_barchart(data); });
 };
 
 function update_barchart(data) {
