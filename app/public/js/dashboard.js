@@ -5,8 +5,14 @@ var CIELAB = '#cielab-view',
     TOOLTIP = '#tooltip';
     HELP_TOOLTIP = '#help-tooltip';
 
+var first_load = true; 
 var parameters = {
     creation_year: { begin: 1614, end: 1714 }
+}
+
+var message = {
+    'first_load': first_load, 
+    'parameters': parameters
 }
 
 function submitSelected() {
@@ -15,7 +21,8 @@ function submitSelected() {
     parameters["school"]= document.getElementById('school').value
     parameters["general_type"]= document.getElementById('general_type').value
 
-    ws.send(JSON.stringify(parameters))
+    message.parameters = parameters
+    ws.send(JSON.stringify(message))
 }
 
 window.onload = () => {
@@ -24,11 +31,12 @@ window.onload = () => {
     cielab_view();
     volume_view();
     graph_view();
-    barchart_view();
+    // barchart_view();
     
-    ws.onopen = () => {
-        // ws.send(JSON.stringify(parameters))
-        submitSelected()
+    ws.onopen = () => {        
+        ws.send(JSON.stringify(message))
+        message.first_load = false;
+        
         console.log("Socket open")
     };
 
@@ -43,7 +51,6 @@ ws.onmessage = (ev) => {
     console.log(message['unchanged'])
 
     if (!message['unchanged']) {
-        console.log(message['graph_data'])    
         console.log('Updating graphs');
         update_cielab(message['graph_data']);
         update_graph(message['graph_data']);
@@ -61,5 +68,8 @@ slider.onChange(function (newRange) {
     parameters["creation_year"]["begin"] = range["begin"]
     parameters["creation_year"]["end"] = range["end"]
     console.log(parameters["creation_year"])
-    ws.send(JSON.stringify(parameters))
+
+    message.parameters = parameters
+
+    ws.send(JSON.stringify(message))
 });

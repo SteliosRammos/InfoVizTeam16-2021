@@ -109,6 +109,8 @@ function volume_view() {
 function update_volume(data, tt = 1000) {
     var minCubeSize = 0.1;
 
+    if (typeof data.frequencies == "undefined") return;
+
     if (data !== null) {
         volume_globals.all_data = data;
         volume_globals.cubeData = [];

@@ -24,7 +24,10 @@ function graph_view() {
 
 function update_graph(data) {
     var svg = d3.select(GRAPH).select('svg');
-
+    
+    if (typeof data.order_per_dist == "undefined") {
+        return
+    }
     var max_idx = Math.min(9, data.order_per_dist.length - 1);
     var max_dist = data.artworks[data.order_per_dist[max_idx]].dist_from_average;
 

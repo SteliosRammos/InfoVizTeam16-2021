@@ -62,7 +62,14 @@ var last_data;
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
         // console.log('Received: %s', message)
-        parameters = JSON.parse(message);
+        data = JSON.parse(message);
+        parameters = data['parameters']
+        first_load = data['first_load']
+
+        if (first_load) {
+            last_data = undefined;
+        }
+
         sql = selection.construct_graph_data_query(parameters);
         console.log("SQL query: %s", sql)
         db.query(sql, function(err, results, fields) {
