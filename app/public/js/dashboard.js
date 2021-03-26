@@ -15,6 +15,8 @@ var message = {
     'parameters': parameters
 }
 
+var options;
+
 function submitSelected() {
     parameters["artist_nationality"]= document.getElementById('country').value
     parameters["artwork_type"]= document.getElementById('artwork_type').value
@@ -48,7 +50,11 @@ var ws = new WebSocket('ws://localhost:40510');
 // Listen to messages from backend
 ws.onmessage = (ev) => {
     message = JSON.parse(ev.data);
+    options = message['options'];
+
+    console.log(options)
     console.log(message['unchanged'])
+
 
     if (!message['unchanged']) {
         console.log('Updating graphs');
@@ -56,6 +62,8 @@ ws.onmessage = (ev) => {
         update_graph(message['graph_data']);
         update_volume(message['graph_data']);
         update_barchart(message['graph_data']);
+
+        
     }
 }
 

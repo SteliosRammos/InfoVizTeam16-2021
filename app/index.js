@@ -76,23 +76,30 @@ wss.on('connection', function (ws) {
             if (err) throw err;
 
             graph_data = results.length == 0 ? {} : graph_data_prep.graph_data(results);
-            options = selection.get_reduced_options(parameters);
+            promises = selection.get_reduced_options(parameters); 
 
-            if (!isEqual(graph_data, last_data)) {
-                console.log('Result data changed!')
-                last_data = graph_data;
-
-                message = {
-                    'unchanged': false,
-                    'options': options,
-                    'graph_data': graph_data
-                }
+            Promise.all(promises).then((results) => {
+                var options = results.reduce((options, [key, values]) => {
+                    options[key] = values;
+                    return options
+                }, {})
+                
+                if (!isEqual(graph_data, last_data)) {
+                    console.log('Result data changed!')
+                    last_data = graph_data;
     
-                ws.send(JSON.stringify(message))
-            } else {
-                console.log('Same old...')
-                ws.send(JSON.stringify({'unchanged': true}))
-            }
+                    message = {
+                        'unchanged': false,
+                        'options': options,
+                        'graph_data': graph_data
+                    }
+        
+                    ws.send(JSON.stringify(message))
+                } else {
+                    console.log('Same old...')
+                    ws.send(JSON.stringify({'unchanged': true}))
+                }
+            });
         })
     })
 })
