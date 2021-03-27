@@ -56,6 +56,8 @@ ws.onmessage = (ev) => {
         update_graph(message['graph_data']);
         update_volume(message['graph_data']);
         update_barchart(message['graph_data']);
+
+        update_options(message['options']);
     }
 }
 
@@ -73,3 +75,15 @@ slider.onTouchEnd(function (newRange) {
 
     ws.send(JSON.stringify(message))
 });
+
+function update_options(options) {
+    console.log(options);
+    for (const category in options) {
+        selector = $('#' + category);
+        selector.children().not(':first').remove()
+
+        options[category].forEach(new_option => {
+            selector.append(new Option(new_option, new_option));
+        });
+    };
+};

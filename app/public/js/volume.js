@@ -109,9 +109,8 @@ function volume_view() {
 function update_volume(data, tt = 1000) {
     var minCubeSize = 0.1;
 
-    if (typeof data.frequencies == "undefined") return;
-
     if (data !== null) {
+        if (typeof data.frequencies == "undefined") return;
         volume_globals.all_data = data;
         volume_globals.cubeData = [];
         var max = Math.max(...d3.values(data.frequencies.colors));
