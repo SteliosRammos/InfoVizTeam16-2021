@@ -103,6 +103,7 @@ function to_graph_data(results) {
     }, {})
     
     let order_per_dist = dsu(ids, distances);
+    let artist_order_per_freq = dsu(Object.keys(artist_freq), Object.values(artist_freq))
 
     graph_data = {
         'cielab': cielab_data,
@@ -112,9 +113,10 @@ function to_graph_data(results) {
         },
         'artworks': artworks,
         'order_per_dist': order_per_dist,
+        'artist_order_per_freq': artist_order_per_freq,
         'average_color': average_crgb
     }
-    // console.log(Object.keys(cielab_data).length)
+
     return graph_data
 }
 
