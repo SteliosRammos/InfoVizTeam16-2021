@@ -87,7 +87,7 @@ wss.on('connection', function (ws) {
                 if (!isEqual(graph_data, last_data)) {
                     console.log('Result data changed!')
                     last_data = graph_data;
-    
+                    console.log('o:', options)
                     message = {
                         'unchanged': false,
                         'options': options,

@@ -28,7 +28,6 @@ function submitSelected() {
 }
 
 window.onload = () => {
-
     // Initialize the views
     cielab_view();
     volume_view();
@@ -52,9 +51,22 @@ ws.onmessage = (ev) => {
     message = JSON.parse(ev.data);
     options = message['options'];
 
-    console.log(options)
     console.log(message['unchanged'])
 
+    var source = document.getElementById("select-template").innerHTML;
+    console.log(source);
+    var template = Handlebars.compile(source);
+
+    var context = {
+        centuries: options['century'],
+        countries: options['artist_nationality'],
+        artwork_types: options['artwork_type'],
+        schools: options['school'],
+        general_types: options['general_type']
+    };
+    
+    console.log(context);
+    document.getElementById("select-options").innerHTML = template(context);
 
     if (!message['unchanged']) {
         console.log('Updating graphs');
@@ -62,8 +74,6 @@ ws.onmessage = (ev) => {
         update_graph(message['graph_data']);
         update_volume(message['graph_data']);
         update_barchart(message['graph_data']);
-
-        
     }
 }
 

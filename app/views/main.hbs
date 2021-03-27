@@ -6,52 +6,11 @@
 <h5>Date range</h5>
 <div id="range-label"></div>
 <div id="container"></div>
-
 <div class="container-fluid">
     <div class="row">
         <nav class="col-2 bg-dark">
             <body>
-                <label>Century:</label>
-                {{!-- <select id='century' , name='century' , onchange="submitSelected()">
-                    <option value="">All</option>
-                    {{ #each centuries }}
-                        <option value="{{century}}">{{century}}</option>
-                    {{ /each }}
-                    <option value="unknown">Unknown century</option>
-                </select><br /><br />
-
-
-                <label>Country:</label>
-                <select id='country' , name="country" , onchange="submitSelected()">
-                    <option value="">All</option>
-                    {{ #each countries }}
-                        <option value="{{country}}">{{country}}</option>
-                    {{ /each }}
-                </select><br /><br />
-
-                <label>Artwork Type:</label>
-                <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
-                    <option value="">All</option>
-                    {{ #each artwork_types }}
-                        <option value="{{artwork_type}}">{{artwork_type}}</option>
-                    {{ /each }}
-                </select><br /><br />
-
-                <label>School:</label>
-                <select id='school' , name="school" , onchange="submitSelected()">
-                    <option value="">All</option>
-                    {{ #each schools }}
-                        <option value="{{school}}">{{school}}</option>
-                    {{ /each }}
-                </select><br /><br />
-
-                <label>General Type:</label>
-                <select id='general_type' , name="general_type" , onchange="submitSelected()">
-                    <option value="">All</option>
-                    {{ #each general_types }}
-                        <option value="{{general_type}}">{{general_type}}</option>
-                    {{ /each }}
-                </select><br /><br /> --}}
+                <div id="select-options"></div>
                 <button type="submit">Sumbit</button><br>
                 <script type="text/javascript" src="static/js/cielab.js"></script>
                 <script type="text/javascript" src="static/js/volume.js"></script>
@@ -104,3 +63,43 @@
 <script type="text/javascript" src="static/js/graph.js"></script>
 <script type="text/javascript" src="static/js/helpTooltip.js"></script>
 <script type="text/javascript" src="static/js/dashboard.js"></script>
+<template id="select-template" type="text/x-handlebars-template">
+    <label style="color: aliceblue;">Century:</label>
+    <select id='century' , name='century' , onchange="submitSelected()">
+        <option value="">All</option>
+        {{#each centuries}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select><br /><br>
+    <label style="color: aliceblue;">Country:</label>
+    <select id='country' , name="country" , onchange="submitSelected()">
+        <option value="">All</option>
+        {{#each countries}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select><br /><br />
+
+    <label style="color: aliceblue;">Artwork Type:</label>
+    <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
+        <option value="">All</option>
+        {{#each artwork_types}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select><br /><br />
+
+    <label style="color: aliceblue;">School:</label>
+    <select id='school' , name="school" , onchange="submitSelected()">
+        <option value="">All</option>
+        {{#each schools}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select><br /><br />
+
+    <label style="color: aliceblue;">General Type:</label>
+    <select id='general_type' , name="general_type" , onchange="submitSelected()">
+        <option value="">All</option>
+        {{#each general_types}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+</template>
