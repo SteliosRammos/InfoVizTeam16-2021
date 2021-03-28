@@ -18,10 +18,20 @@ var message = {
 var options;
 
 function submitSelected() {
-    parameters["artist_nationality"]= document.getElementById('country').value
+    parameters["artist_nationality"]= document.getElementById('artist_nationality').value
     parameters["artwork_type"]= document.getElementById('artwork_type').value
     parameters["school"]= document.getElementById('school').value
-    parameters["general_type"]= document.getElementById('general_type').value
+
+    message.parameters = parameters
+    ws.send(JSON.stringify(message))
+}
+
+function resetOptions() {
+    parameters["artist_nationality"] = ''
+    parameters["artwork_type"] = ''
+    parameters["school"] = ''
+    parameters["general_type"]= ''
+    parameters["creation_year"] = { begin: 1614, end: 1714 }
 
     message.parameters = parameters
     ws.send(JSON.stringify(message))
@@ -80,11 +90,37 @@ slider.onTouchEnd(function (newRange) {
 function update_options(options) {
     console.log(options);
     for (const category in options) {
+
         selector = $('#' + category);
         selector.children().not(':first').remove()
+        
+        if (category == "general_type") {
+            selector.append('<br>')
+            options[category].forEach(new_option => {
+                selector.append(`<input type="radio" id="${new_option}" name="general_type" value="${new_option}">`);
+                selector.append(`<label for="${new_option}">${new_option}</label><br></br>`);
+            });
 
-        options[category].forEach(new_option => {
+            // Update general type value based on radio selection
+            var general_type_radio = document.radioSelect.general_type;
+            var prev = null;
+            for (var i = 0; i < general_type_radio.length; i++) {
+                general_type_radio[i].addEventListener('change', function() {
+                    (prev) ? console.log(prev.value) : null;
+                    
+                    if (this !== prev) {
+                        prev = this;
+                    }
+
+                    parameters["general_type"] = this.value
+
+                    submitSelected();
+                });
+            }
+        } else {
+            options[category].forEach(new_option => {
             selector.append(new Option(new_option, new_option));
         });
+        }
     };
 };

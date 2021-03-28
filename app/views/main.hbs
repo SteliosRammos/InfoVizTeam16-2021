@@ -208,24 +208,38 @@
                 <option value="United States of America">United States of America</option>
             </select><br /><br />
 
-            <label>General Type:</label>
-            <select id='general_type' , name="general_type" , onchange="submitSelected()">
-                <option value="">All</option>
-                <option value="craft">Craft</option>
-                <option value="design">Design</option>
-                <option value="drawing">Drawing</option>
-                <option value="installation">Installation</option>
-                <option value="new media">New Media</option>
-                <option value="mixed media">Mixed Media</option>
-                <option value="performance art">Performance Art</option>
-                <option value="weapons and armor">Weapons and Armor</option>
-                <option value="painting">Painting</option>
-                <option value="photograph">Photograph</option>
-                <option value="print">Print</option>
-                <option value="sculputure">Sculpture</option>
-                <option value="textile">Textile</option>
-                <option value="unknown">Unknown</option>
-            </select>
+            <form id="general_type" name="radioSelect">
+                <label>General Type:</label><br>
+                <input type="radio" id="craft" name="general_type" value="craft">
+                    <label for="craft">Craft</label><br>
+                <input type="radio" id="design" name="general_type" value="design">
+                    <label for="design">Design</label><br>
+                <input type="radio" id="drawing" name="general_type" value="drawing">
+                    <label for="drawing">Drawing</label><br>
+                <input type="radio" id="installation" name="general_type" value="installation">
+                    <label for="installation">Installation</label><br>
+                <input type="radio" id="new media" name="general_type" value="new media">
+                    <label for="new media">New Media</label><br>
+                <input type="radio" id="mixed media" name="general_type" value="mixed media">
+                    <label for="mixed media">Mixed Media</label><br>
+                <input type="radio" id="performance art" name="general_type" value="performance art">
+                    <label for="performance art">Performance Art</label><br>
+                <input type="radio" id="weapons and armor" name="general_type" value="weapons and armor">
+                    <label for="weapons and armor">Weapons and Armor</label><br>
+                <input type="radio" id="painting" name="general_type" value="painting">
+                    <label for="painting">Painting</label><br>
+                <input type="radio" id="photograph" name="general_type" value="photograph">
+                    <label for="photograph">Photograph</label><br>
+                <input type="radio" id="print" name="general_type" value="print">
+                    <label for="print">Print</label><br>
+                <input type="radio" id="sculputure" name="general_type" value="sculputure">
+                    <label for="sculputure">Sculpture</label><br>
+                <input type="radio" id="textile" name="general_type" value="textile">
+                    <label for="textile">Textile</label><br>
+                <input type="radio" id="unknown" name="general_type" value="unknown">
+                    <label for="unknown">Unknown</label><br>
+            </form>
+            <button onclick="resetOptions()">Reset Options</button>
         </nav>
         <main role="main" class="col-10">
             <div class="row mt-4">
