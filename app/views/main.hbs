@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    {{!-- <script src="https://d3js.org/d3.v3.min.js"></script> --}}
     <script>
 
         var color = "darkgrey";
@@ -1020,7 +1020,7 @@
 
         var max = d3.max(values);
         var min = d3.min(values);
-        var x = d3.scale.linear()
+        var x = d3.scaleLinear()
             .domain([min, max])
             .range([0, width]);
 
@@ -1031,11 +1031,11 @@
 
         var yMax = d3.max(data, function (d) { return d.length });
         var yMin = d3.min(data, function (d) { return d.length });
-        var colorScale = d3.scale.linear()
+        var colorScale = d3.scaleLinear()
             .domain([yMin, yMax])
             .range([d3.rgb(color).brighter(), d3.rgb(color).darker()]);
 
-        var y = d3.scale.linear()
+        var y = d3.scaleLinear()
             .domain([0, yMax])
             .range([height, 0]);
 
