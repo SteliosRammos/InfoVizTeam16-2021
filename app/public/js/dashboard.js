@@ -7,7 +7,7 @@ var CIELAB = '#cielab-view',
 
 var first_load = true; 
 var parameters = {
-    creation_year: { begin: 1614, end: 1714 }
+    creation_year: { begin: -500, end: 2021 }
 }
 
 var message = {
@@ -31,7 +31,7 @@ function resetOptions() {
     parameters["artwork_type"] = ''
     parameters["school"] = ''
     parameters["general_type"]= ''
-    parameters["creation_year"] = { begin: 1614, end: 1714 }
+    parameters["creation_year"] = { begin: -500, end: 2021 }
 
     message.parameters = parameters
     ws.send(JSON.stringify(message))
@@ -98,7 +98,7 @@ function update_options(options) {
             selector.append('<br>')
             options[category].forEach(new_option => {
                 selector.append(`<input type="radio" id="${new_option}" name="general_type" value="${new_option}">`);
-                selector.append(`<label for="${new_option}">${new_option}</label><br></br>`);
+                selector.append(`<label for="${new_option}">${new_option}</label><br>`);
             });
 
             // Update general type value based on radio selection
