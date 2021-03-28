@@ -15,6 +15,8 @@ var message = {
     'parameters': parameters
 }
 
+var options;
+
 function submitSelected() {
     parameters["artist_nationality"]= document.getElementById('country').value
     parameters["artwork_type"]= document.getElementById('artwork_type').value
@@ -26,7 +28,6 @@ function submitSelected() {
 }
 
 window.onload = () => {
-
     // Initialize the views
     cielab_view();
     volume_view();
@@ -48,7 +49,7 @@ var ws = new WebSocket('ws://localhost:40510');
 // Listen to messages from backend
 ws.onmessage = (ev) => {
     message = JSON.parse(ev.data);
-    console.log(message['unchanged'])
+    options = message['options'];
 
     if (!message['unchanged']) {
         console.log('Updating graphs');

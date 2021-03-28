@@ -73,10 +73,7 @@ function get_reduced_options(parameters) {
         )
     })
 
-    Promise.all(promises).then(([key, values]) => {
-        console.log(key, values);
-    });
-    return options
+    return promises
 }
 
 module.exports = {
