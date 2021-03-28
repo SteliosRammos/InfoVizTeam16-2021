@@ -7,7 +7,7 @@ var CIELAB = '#cielab-view',
 
 var first_load = true; 
 var parameters = {
-    creation_year: { begin: -500, end: 2021 }
+    creation_year: { begin: 1800, end: 1850 }
 }
 
 var message = {
@@ -18,10 +18,43 @@ var message = {
 var options;
 
 function submitSelected() {
+    console.log('Submitting selection')
     parameters["artist_nationality"]= document.getElementById('artist_nationality').value
     parameters["artwork_type"]= document.getElementById('artwork_type').value
     parameters["school"]= document.getElementById('school').value
 
+    message.parameters = parameters
+    ws.send(JSON.stringify(message))
+}
+
+function submitPreSelection(option) {
+    console.log(option)
+    switch (option) {
+        case 1:
+            console.log('In case 1')
+            parameters["artist_nationality"] = ''
+            parameters["artwork_type"] = ''
+            parameters["school"] = ''
+            parameters["general_type"] = ''
+            parameters["creation_year"] = { begin: 1550, end: 1650 }
+            break;
+        case 2:
+            parameters["artist_nationality"] = ''
+            parameters["artwork_type"] = ''
+            parameters["school"] = ''
+            parameters["general_type"]= ''
+            parameters["creation_year"] = { begin: 1650, end: 1750 }
+            break;
+        case 3:
+            parameters["artist_nationality"] = ''
+            parameters["artwork_type"] = ''
+            parameters["school"] = ''
+            parameters["general_type"]= ''
+            parameters["creation_year"] = { begin: 1750, end: 1850 }
+            break;
+    }
+
+    console.log(parameters)
     message.parameters = parameters
     ws.send(JSON.stringify(message))
 }
@@ -31,7 +64,7 @@ function resetOptions() {
     parameters["artwork_type"] = ''
     parameters["school"] = ''
     parameters["general_type"]= ''
-    parameters["creation_year"] = { begin: -500, end: 2021 }
+    parameters["creation_year"] = { begin: 1800, end: 1850 }
 
     message.parameters = parameters
     ws.send(JSON.stringify(message))

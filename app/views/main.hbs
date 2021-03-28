@@ -1,8 +1,9 @@
 <!-- Range slider code -->
 <script src="static/js/slider.js"></script>
 
-<!-- Range slider style -->
-<link href="static/js/slider.css" rel="stylesheet">
+<!-- CSS stylsheets -->
+<link href="static/css/slider.css" rel="stylesheet">
+{{!-- <link href="static/css/selection_menu.css" rel="stylesheet"> --}}
 <h5>Date range</h5>
 <div id="range-label"></div>
 <div id="container"></div>
@@ -35,6 +36,13 @@
                 <label>General Type:</label><br>
             </form>
             <button onclick="resetOptions()">Reset Options</button>
+            <br></br>
+            <div style="color: aliceblue" id="pre-selected-options">
+                <p>Explore one of the following pre-selected stories:</p>
+                <label>An amazing insight</label><button id="pre-option-1" onclick="submitPreSelection(1)">View</button><br>
+                <label>An incredible story</label><button id="pre-option-2" onclick="submitPreSelection(2)">View</button><br>
+                <label>A great piece of art color history</label><button id="pre-option-3" onclick="submitPreSelection(3)">View</button><br>
+            </div>
         </nav>
         <main role="main" class="col-10">
             <div class="row mt-4">
@@ -83,3 +91,9 @@
 <script type="text/javascript" src="static/js/graph.js"></script>
 <script type="text/javascript" src="static/js/helpTooltip.js"></script>
 <script type="text/javascript" src="static/js/dashboard.js"></script>
+{{!-- <script>
+    $(document).ready(() => {
+        //$("#general_type").css("color", "aqua");
+        $('head').append('<link href="static/css/selection_menu.css" rel="stylesheet" type="text/css">')
+    });
+</script> --}}
