@@ -79,27 +79,60 @@
         {{/each}}
     </select><br /><br />
 
-    <label style="color: aliceblue;">Artwork Type:</label>
-    <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
-        <option value="">All</option>
-        {{#each artwork_types}}
-            <option value="{{this}}">{{this}}</option>
-        {{/each}}
-    </select><br /><br />
+      var parameters = {
+        creation_year: { begin: 1614, end: 1714 }
+    }
 
-    <label style="color: aliceblue;">School:</label>
-    <select id='school' , name="school" , onchange="submitSelected()">
-        <option value="">All</option>
-        {{#each schools}}
-            <option value="{{this}}">{{this}}</option>
-        {{/each}}
-    </select><br /><br />
+    function submitSelected() {
+        parameters["artist_nationality"]= document.getElementById('country').value
+        parameters["artwork_type"]= document.getElementById('artwork_type').value
+        parameters["school"]= document.getElementById('school').value
+        parameters["general_type"]= document.getElementById('general_type').value
 
-    <label style="color: aliceblue;">General Type:</label>
-    <select id='general_type' , name="general_type" , onchange="submitSelected()">
-        <option value="">All</option>
-        {{#each general_types}}
-            <option value="{{this}}">{{this}}</option>
-        {{/each}}
-    </select>
-</template>
+        ws.send(JSON.stringify(parameters))
+    }
+
+    // Initialize the views
+    cielab_view();
+    volume_view();
+    graph_view();
+    barchart_view();
+    
+    window.onload = () => {
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify(parameters))
+            console.log("Socket open")
+        };
+    }
+    
+    // Define websocket
+    var ws = new WebSocket('ws://localhost:40510');
+    
+    // Listen to messages from backend
+    ws.onmessage = (ev) => {
+        message = JSON.parse(ev.data);
+        console.log(message['unchanged'])
+
+        if (!message['unchanged']) {
+            console.log(message['graph_data'])    
+            console.log('Updating graphs');
+            update_cielab(message['graph_data']);
+            update_graph(message['graph_data']);
+            update_volume(message['graph_data']);
+            update_barchart(message['graph_data']);
+        }
+    }
+
+    // Slider
+    var slider = createD3RangeSlider(-400, 2021, "#container", true);
+    slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
+    slider.onChange(function (newRange) {
+        d3.select("#range-label").html(newRange.begin + " &mdash; " + newRange.end);
+        range = slider.range()
+        parameters["creation_year"]["begin"] = range["begin"]
+        parameters["creation_year"]["end"] = range["end"]
+        console.log(parameters["creation_year"])
+        ws.send(JSON.stringify(parameters))
+    });
+</script>

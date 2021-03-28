@@ -51,23 +51,6 @@ ws.onmessage = (ev) => {
     message = JSON.parse(ev.data);
     options = message['options'];
 
-    console.log(message['unchanged'])
-
-    var source = document.getElementById("select-template").innerHTML;
-    console.log(source);
-    var template = Handlebars.compile(source);
-
-    var context = {
-        centuries: options['century'],
-        countries: options['artist_nationality'],
-        artwork_types: options['artwork_type'],
-        schools: options['school'],
-        general_types: options['general_type']
-    };
-    
-    console.log(context);
-    document.getElementById("select-options").innerHTML = template(context);
-
     if (!message['unchanged']) {
         console.log('Updating graphs');
         update_cielab(message['graph_data']);
