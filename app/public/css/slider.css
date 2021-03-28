@@ -67,6 +67,22 @@
     font-weight: 150;
 }
 
+#graph-slider {
+    height: 30px;
+    padding-bottom: 25px;
+    position: relative;
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
+#graph-slider-label {
+    text-align: center;
+    font-size: 400;
+    font-weight: 150;
+    position: relative;
+}
+
 .section {
     margin-bottom: 5em;
     font-size: 1.5em;
