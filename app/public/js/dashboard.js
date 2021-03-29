@@ -101,7 +101,7 @@ window.onload = () => {
     cielab_view();
     volume_view();
     graph_view();
-    // barchart_view();
+    barchart_view();
     
     ws.onopen = () => {        
         ws.send(JSON.stringify(message))

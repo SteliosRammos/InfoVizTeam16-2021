@@ -134,7 +134,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
     var bins = 120;
     var width = sliderBox.node().clientWidth;
     hist.attr('width', width + 'px')
-    console.log(width)
+
     var x = d3.scaleLinear()
         .domain([rangeMin, rangeMax])
         .range([0, width]);// - width / bins]);
@@ -184,7 +184,6 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         var width = sliderBox.node().clientWidth;
         hist.attr('width', width + 'px')
 
-        console.log(width)
         var x = d3.scaleLinear()
             .domain([rangeMin, rangeMax])
             .range([0, width]);// - width / bins]);
