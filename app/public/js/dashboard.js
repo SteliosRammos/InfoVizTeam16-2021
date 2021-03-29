@@ -27,11 +27,10 @@ function submitSelected() {
     parameters["century"] = century
     parameters["creation_year"]["begin"] = (century * 100) - 100
     parameters["creation_year"]["end"] = (century * 100) - 1
-    parameters["artist_nationality"]= document.getElementById('artist_nationality').value.toUpperCase()
+    parameters["artist_nationality"]= document.getElementById('artist_nationality').value
     parameters["artwork_type"]= document.getElementById('artwork_type').value
     parameters["school"]= document.getElementById('school').value
 
-    //for (i=0; i<) should add the iteragte here
 
     if (!slider_trigger) {
         slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);

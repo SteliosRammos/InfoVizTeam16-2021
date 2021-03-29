@@ -1115,6 +1115,8 @@
 
 <!-- Range slider code -->
 <script src="static/js/slider.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 
 <!-- CSS stylsheets -->
 <link href="static/css/slider.css" rel="stylesheet">
@@ -1137,17 +1139,40 @@
             <br /><br />
 
             <label>Country:</label>
-            <input type="text" id="artist_nationality" onkeyup="countryS()" placeholder="Search for a country">
+            <select id='artist_nationality' , name="artist_nationality" , onchange="submitSelected()">
+                <option value="">-Select a country-</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Australia">Australia</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Canada">Canada</option>
+                <option value="Denmark">Denmark</option>
+                <option value="France">France</option>
+                <option value="Germany">Germany</option>
+                <option value="Greece">Greece</option>
+                <option value="Hungary">Hungary</option>
+                <option value="Italy">Italy</option>
+                <option value="Japan">Japan</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="Norway">Norway</option>
+                <option value="Poland">Poland</option>
+                <option value="Romania">Romania</option>
+                <option value="Russia">Russia</option>
+                <option value="Spain">Spain</option>
+                <option value="Sweden">Sweden</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Ukraine">Ukraine</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
             <br /><br />
 
             <label>Artwork Type:</label>
             <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
-                <option value="">All</option>
+                <option value="">-Select an artwork type-</option>
             </select><br /><br />
 
             <label>School:</label>
             <select id='school' , name="school" , onchange="submitSelected()">
-                <option value="">All</option>
+                <option value="">-Select a artwork school-</option>
                 <option value=unknown>Unknown</option>
             </select><br /><br />
 
