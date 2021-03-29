@@ -1126,15 +1126,19 @@
     <div class="row">
         <nav class="col-2 bg-dark"><br /><br />
             <label>Century:</label>
-            <select id='century' , name='century' , onchange="submitSelected()">
-                <option value="">All</option>
-                <option value="unknown">Unknown century</option>
-            </select><br /><br />
+            <button type='submit' value='14' onclick="submitSelected()">14th</button>
+            <button type='submit' value='15' onclick="submitSelected()">15th</button>
+            <button type='submit' value='16' onclick="submitSelected()">16th</button>
+            <button type='submit' value='17' onclick="submitSelected()">17th</button>
+            <button type='submit' value='18' onclick="submitSelected()">18th</button>
+            <button type='submit' value='19' onclick="submitSelected()">19th</button> 
+            <button type='submit' value='20' onclick="submitSelected()">20th</button>
+            <button type='submit' value='21' onclick="submitSelected()">21st</button> 
+            <br /><br />
 
             <label>Country:</label>
-            <select id='artist_nationality' , name="country" , onchange="submitSelected()">
-                <option value="">All</option>
-            </select><br /><br />
+            <input type="text" id="artist_nationality" onkeyup="countryS()" placeholder="Search for a country">
+            <br /><br />
 
             <label>Artwork Type:</label>
             <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
