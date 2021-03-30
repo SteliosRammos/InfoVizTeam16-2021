@@ -1,0 +1,15 @@
+#general_type {
+    color: aqua;
+}
+
+#artist_nationality {
+	background-image: url('https://static.runoob.com/images/mix/searchicon.png'); /*search button */
+	background-position: 10px 12px; /*search button postion(should change based on overall) */
+	background-repeat: no-repeat;
+	width: 100%;
+	font-size: 16px;
+	padding: 12px 20px 12px 40px
+	border: 1px solid #ddd;
+	margin-bottom: 12px;
+}
+
