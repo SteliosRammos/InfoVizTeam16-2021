@@ -218,15 +218,36 @@ function update_options(options) {
             floatCenturies = options[category].map((value) => parseFloat(value));
             orderedCenturies = dsu(options[category], floatCenturies)
 
+            $('.century-button').removeClass('active');
+
             orderedCenturies.forEach(new_option => {
                 if (new_option != "unknown"){
+                    $('.century-button').addClass('active');
                     selector.append(`<button class="century-button" type='submit' value='${new_option}'>${new_option.slice(0, -2)}th</button>`)
                 }
             })
         } else {
+
+            if (parameters[category] != '') {
+                default_option = $('#' + category + " > .default-option");
+                default_option.remove()
+            } else {
+                switch (category) {
+                    case 'artist_nationality':
+                        selector.append(`<option class='default-option' value="">-Select a country-</option>`)
+                        break;
+                    case 'artwork_type':
+                        selector.append(`<option class='default-option' value="">-Select an artwork type-</option>`)
+                        break;
+                    case 'school':
+                        selector.append(`<option class='default-option' value="">-Select a artwork school-</option>`)
+                        break;
+                }
+            }
+
             options[category].forEach(new_option => {
                 selector.append(new Option(new_option, new_option));
-        });
+            });
         }
     };
 };
