@@ -75,31 +75,52 @@ function submitSelected(option) {
 function submitPreSelection(option) {
     console.log(option)
     switch (option) {
-        case 1:
-            parameters["century"] = ''
+        case 1.1:
+            parameters["century"] = '17.0'
             parameters["artist_nationality"] = ''
-            parameters["artwork_type"] = ''
+            parameters["artwork_type"] = 'portrait'
             parameters["school"] = ''
             parameters["general_type"] = ''
-            parameters["creation_year"] = { begin: 1550, end: 1650 }
+            parameters["creation_year"]["begin"] = (parameters["century"] * 100) - 100;
+            parameters["creation_year"]["end"] = (parameters["century"] * 100) - 1;
             slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
             break;
-        case 2:
-            parameters["century"] = ''
+        case 1.2:
+            parameters["century"] = '19.0'
             parameters["artist_nationality"] = ''
+            parameters["artwork_type"] = 'portrait'
+            parameters["school"] = ''
+            parameters["general_type"] = ''
+            parameters["creation_year"]["begin"] = (parameters["century"] * 100) - 100;
+            parameters["creation_year"]["end"] = (parameters["century"] * 100) - 1;
+            slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
+            break;
+        case 2.1:
+            parameters["century"] = ''
+            parameters["artist_nationality"] = 'Japan'
             parameters["artwork_type"] = ''
             parameters["school"] = ''
             parameters["general_type"]= ''
-            parameters["creation_year"] = { begin: 1650, end: 1750 }
+            parameters["creation_year"] = { begin: 1600, end: 1799 }
             slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
             break;
+            case 2.2:
+                parameters["century"] = ''
+                parameters["artist_nationality"] = 'Netherlands'
+                parameters["artwork_type"] = ''
+                parameters["school"] = ''
+                parameters["general_type"]= ''
+                parameters["creation_year"] = { begin: 1600, end: 1799 }
+                slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
+                break;
         case 3:
-            parameters["century"] = ''
-            parameters["artist_nationality"] = ''
+            parameters["century"] = '20.0'
+            parameters["artist_nationality"] = 'United States'
             parameters["artwork_type"] = ''
             parameters["school"] = ''
             parameters["general_type"]= ''
-            parameters["creation_year"] = { begin: 1750, end: 1850 }
+            parameters["creation_year"]["begin"] = (parameters["century"] * 100) - 100;
+            parameters["creation_year"]["end"] = (parameters["century"] * 100) - 1;
             slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
             break;
     }
