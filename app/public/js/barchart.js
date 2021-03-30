@@ -2,8 +2,8 @@ var barchart_width = 480;
 var barchart_height = 500;
 var barchart_margin = {top: 40, right: 20, bottom: 10, left: 200}
 var barchart_globals = {
-    'nbars': 15,
-    'max_nbars': 15,
+    'nbars': 16,
+    'max_nbars': 16,
     'data': null
 }
 
@@ -29,18 +29,18 @@ function barchart_view() {
         .attr("transform", `translate(${barchart_margin.left}, ${barchart_margin.top - 15})`)
         .style("font-size", "14px");
     
-    var barchart_slider = d3.select(BARCHART).append('div').attr('id', 'barchart-slider');
-    var slider = createD3SimpleSlider(1, barchart_globals.max_nbars, "#barchart-slider");
-    slider.select(barchart_globals.nbars);
-    slider.onChange(function (newPos) {
-        d3.select("#barchart-slider-label").text(newPos + ' artist' + (newPos > 1 ? 's' : ''));
-        pos = slider.select();
-        // barchart_globals.nbars = 0;
-        // update_graph();
-        barchart_globals.nbars = pos;
-        update_barchart();
-    });
-    barchart_slider.append('div').attr('id', 'barchart-slider-label').text(barchart_globals.nbars + ' artists');
+    // var barchart_slider = d3.select(BARCHART).append('div').attr('id', 'barchart-slider');
+    // var slider = createD3SimpleSlider(1, barchart_globals.max_nbars, "#barchart-slider");
+    // slider.select(barchart_globals.nbars);
+    // slider.onChange(function (newPos) {
+    //     d3.select("#barchart-slider-label").text(newPos + ' artist' + (newPos > 1 ? 's' : ''));
+    //     pos = slider.select();
+    //     // barchart_globals.nbars = 0;
+    //     // update_graph();
+    //     barchart_globals.nbars = pos;
+    //     update_barchart();
+    // });
+    // barchart_slider.append('div').attr('id', 'barchart-slider-label').text(barchart_globals.nbars + ' artists');
 
 };
 

@@ -129,7 +129,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
     var handleW = slider.append("div").attr("class", "handle WW");
     var handleE = slider.append("div").attr("class", "handle EE");
 
-    var histColor = "darkgrey";
+    var histColor = "#698fda";
 
     var bins = 120;
     var width = sliderBox.node().clientWidth;
@@ -146,9 +146,9 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
 
     var yMax = d3.max(data, function (d) { return d.length });
     var yMin = d3.min(data, function (d) { return d.length });
-    var colorScale = d3.scaleLinear()
-        .domain([yMin, yMax])
-        .range([d3.rgb(histColor).brighter(), d3.rgb(histColor).darker()]);
+    // var colorScale = d3.scaleLinear()
+    //     .domain([yMin, yMax])
+    //     .range([d3.rgb(histColor).brighter(), d3.rgb(histColor).darker()]);
 
     var y = d3.scaleLinear()
         .domain([0, yMax])
@@ -167,9 +167,10 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
 
     bar.append("rect")
         .attr("x", 1)
-        .attr("width", (x(data[0].x1 - data[0].x0) - x(0)) - 1)
+        .attr("width", Math.max(0, (x(data[0].x1 - data[0].x0) - x(0)) - 1))
         .attr("height", function (d) { return histHeight - axisHeight - y(d.length); })
-        .attr("fill", function (d) { return colorScale(d.length) });
+        // .attr("fill", function (d) { return colorScale(d.length) })
+        .attr("fill", histColor);
 
     svg.append("g")
         .attr("class", "axis")
@@ -196,9 +197,9 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         var yMax = d3.max(data, function (d) { return d.length });
         var yMin = d3.min(data, function (d) { return d.length });
         y.domain([0, yMax]);
-        var colorScale = d3.scaleLinear()
-            .domain([yMin, yMax])
-            .range([d3.rgb(histColor).brighter(), d3.rgb(histColor).darker()]);
+        // var colorScale = d3.scaleLinear()
+        //     .domain([yMin, yMax])
+        //     .range([d3.rgb(histColor).brighter(), d3.rgb(histColor).darker()]);
 
         var bar = svg.selectAll(".bar").data(data);
 
@@ -212,9 +213,10 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         bar.select("rect")
             .transition()
             .duration(tt)
-            .attr("width", (x(data[0].x1 - data[0].x0) - x(0)) - 1)
+            .attr("width", Math.max(0, (x(data[0].x1 - data[0].x0) - x(0)) - 1))
             .attr("height", function (d) { return histHeight - axisHeight - y(d.length); })
-            .attr("fill", function (d) { return colorScale(d.length) });
+            // .attr("fill", function (d) { return colorScale(d.length) })
+            .attr("fill", histColor);
 
         svg.select('.axis').selectAll('*').remove();
         svg.select('.axis').call(d3.axisBottom(x));

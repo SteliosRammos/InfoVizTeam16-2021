@@ -20,7 +20,6 @@ function volume_view() {
         .on('mouseover', () => { show_help(help_text); })
         .on('mouseout', () => { hide_help(); });
 
-    d3.select(VOLUME).append('button').style('margin-left', '10px').text('Grid').on('click', toggle_grid);
     var g = d3.select(VOLUME).append('svg')
         .attr('width', volume_width)
         .attr('height', volume_height)
@@ -29,6 +28,12 @@ function volume_view() {
             .on('start', dragStart)
             .on('end', dragEnd))
         .append('g');
+
+    d3.select(VOLUME)
+        .append('button')
+        .style('float', 'right')
+        .text('Grid')
+        .on('click', toggle_grid);
 
     var mx, my, mouseX, mouseY;
 
