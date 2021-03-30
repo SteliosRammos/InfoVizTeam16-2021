@@ -24,23 +24,25 @@
         </div>
     <div class="row">
         <nav class="col-2"><br /><br />
-            <label>Century:</label>
-            <div id="century"></div>
+            <div id="century">
+                <label>Century:</label>
+            </div>
             <br>
 
             <label>Country:</label>
-            <select id='artist_nationality' name="artist_nationality" onchange="submitSelected()">
+            <select id='artist_nationality' name="artist_nationality" onchange="submitSelected(this)">
                 <option value="">-Select a country-</option>
+            </select>
             <br>
 
             <label>Artwork Type:</label>
-            <select id='artwork_type' name="artwork_type" onchange="submitSelected()">
+            <select id='artwork_type' name="artwork_type" onchange="submitSelected(this)">
                 <option value="">-Select an artwork type-</option>
             </select>
             <br>
 
             <label>School:</label>
-            <select id='school' name="school" onchange="submitSelected()">
+            <select id='school' name="school" onchange="submitSelected(this)">
                 <option value="">-Select a artwork school-</option>
             </select>
             <br>

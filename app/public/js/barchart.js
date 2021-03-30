@@ -85,7 +85,6 @@ function update_barchart(data = null) {
     scaleX = d3.scaleLinear()
         .domain([0, Math.ceil(max_freq/10)*10])
         .range([margin.left, barchart_width - margin.right]);
-    console.log(freqs)
 
     svg.selectAll('path').remove();
     var bars = svg.selectAll("path").data(freqs, (d) => { return d.artist });

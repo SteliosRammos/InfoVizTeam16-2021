@@ -7,17 +7,33 @@ var CIELAB = '#cielab-view',
 
 var first_load = true; 
 var slider_trigger = false; // true when graph update is triggered by slider
-const default_year_range = { begin: -400, end: 1850 }
+const default_year_range = { begin: 1200, end: 1850 }
 
 var parameters = {
-    creation_year: { begin: -400, end: 1850 }
+    artist_nationality: '',
+    artwork_type: '',
+    general_type: '',
+    school: '',
+    century: '',
+    creation_year: { begin: 1200, end: 1850 }
 }
+
+// function updateParameters(updated_parameters) { 
+//     parameters = updated_parameters
+// }
 
 var message = {
     'first_load': first_load, 
     'parameters': parameters
 }
 
+function sendWebSocketMessage() {
+    console.log('Submitting selection')
+    console.log('Parameters: ', parameters)
+
+    message.parameters = parameters
+    ws.send(JSON.stringify(message))
+}
 var options;
 
 // SORTING UTILITY
@@ -26,31 +42,23 @@ const dsu = (arr1, arr2) => arr1
     .sort(([arg1], [arg2]) => arg1 - arg2) // sort by the args
     .map(([, item]) => item); // extract the sorted items
 
-// BUTTON FUNCTIONALITIES
+// OPTIONS
 
-// Give radio-like behavior to button
+// Give radio-like behavior to century buttons
 $(document).on('click', '.century-button', function() {
     //Remove active class from all buttons
     $('.century-button').removeClass('active');
 
     //Add active class to the clicked button
     $(this).addClass('active');
+
+
     parameters["century"] = $(this)[0].value
+    parameters["creation_year"]["begin"] = (parameters["century"] * 100) - 100;
+    parameters["creation_year"]["end"] = (parameters["century"] * 100) - 1;
 
     console.log('Century selected: ', $(this)[0].value)
     console.log('param century: ', parameters["century"])
-
-    submitSelected()
- });
-
-function submitSelected() {
-    console.log('Submitting selection')
-    parameters["creation_year"]["begin"] = (parameters["century"] * 100) - 100
-    parameters["creation_year"]["end"] = (parameters["century"] * 100) - 1
-    parameters["artist_nationality"]= document.getElementById('artist_nationality').value
-    parameters["artwork_type"]= document.getElementById('artwork_type').value
-    parameters["school"]= document.getElementById('school').value
-
 
     if (!slider_trigger) {
         slider.range(parameters["creation_year"]["begin"], parameters["creation_year"]["end"]);
@@ -58,15 +66,20 @@ function submitSelected() {
         slidder_trigger = false;
     }
 
-    message.parameters = parameters
-    ws.send(JSON.stringify(message))
+    sendWebSocketMessage()
+ });
+
+ // Submit function for dropdown menus
+function submitSelected(option) {
+    parameters[option.id]= option.value
+
+    sendWebSocketMessage()
 }
 
 function submitPreSelection(option) {
     console.log(option)
     switch (option) {
         case 1:
-            console.log('In case 1')
             parameters["century"] = ''
             parameters["artist_nationality"] = ''
             parameters["artwork_type"] = ''
@@ -95,9 +108,8 @@ function submitPreSelection(option) {
             break;
     }
 
-    console.log(parameters)
-    message.parameters = parameters
-    ws.send(JSON.stringify(message))
+    console.log('Submitting Pre-Selection with params: ', parameters)
+    sendWebSocketMessage()
 }
 
 function resetOptions() {
@@ -106,14 +118,13 @@ function resetOptions() {
     parameters["artwork_type"] = ''
     parameters["school"] = ''
     parameters["general_type"]= ''
+
     let year_range = $.extend({}, default_year_range)
     parameters["creation_year"] = year_range
     slider.range(year_range.begin, year_range.end)
 
-    console.log('Default range: ', default_year_range)
     console.log('Parameters on reset: ', parameters)
-    message.parameters = parameters
-    ws.send(JSON.stringify(message))
+    sendWebSocketMessage();
 }
 
 
@@ -164,15 +175,14 @@ slider.onTouchEnd(function (newRange) {
     range = slider.range()
     parameters["creation_year"]["begin"] = range["begin"]
     parameters["creation_year"]["end"] = range["end"]
+    parameters["century"] = ''
     console.log(parameters["creation_year"])
 
-    message.parameters = parameters
     slidder_trigger = true;
-    ws.send(JSON.stringify(message))
+    sendWebSocketMessage();
 });
 
 function update_options(options) {
-    console.log(options);
     for (const category in options) {
 
         selector = $('#' + category);
@@ -199,18 +209,14 @@ function update_options(options) {
                         }
     
                         parameters["general_type"] = this.value
-    
-                        submitSelected();
+                        sendWebSocketMessage()
                     });
                 }
             }
         } else if (category == "century") {
-            console.log(options[category])
             // order the centuries
             floatCenturies = options[category].map((value) => parseFloat(value));
             orderedCenturies = dsu(options[category], floatCenturies)
-
-            console.log(orderedCenturies)
 
             orderedCenturies.forEach(new_option => {
                 if (new_option != "unknown"){
@@ -218,7 +224,6 @@ function update_options(options) {
                 }
             })
         } else {
-            if (category == "artwork_type") console.log(options[category]);
             options[category].forEach(new_option => {
                 selector.append(new Option(new_option, new_option));
         });
