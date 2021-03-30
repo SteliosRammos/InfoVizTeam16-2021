@@ -45,12 +45,12 @@ const dsu = (arr1, arr2) => arr1
 // OPTIONS
 
 // Give radio-like behavior to century buttons
-$(document).on('click', '.century-button', function() {
+$(document).on('click', '.century-button.active', function() {
     //Remove active class from all buttons
-    $('.century-button').removeClass('active');
+    $('.century-button.active').removeClass('selected');
 
     //Add active class to the clicked button
-    $(this).addClass('active');
+    $(this).addClass('selected');
 
 
     parameters["century"] = $(this)[0].value
@@ -124,6 +124,7 @@ function resetOptions() {
     slider.range(year_range.begin, year_range.end)
 
     console.log('Parameters on reset: ', parameters)
+    $('.century-button').removeClass('selected')
     sendWebSocketMessage();
 }
 
@@ -186,7 +187,7 @@ function update_options(options) {
     for (const category in options) {
 
         selector = $('#' + category);
-        selector.children().not(':first').remove()
+        if (category != 'century') selector.children().not(':first').remove();
         
         if (category == "general_type") {
             selector.append('<br>')
@@ -217,13 +218,15 @@ function update_options(options) {
             // order the centuries
             floatCenturies = options[category].map((value) => parseFloat(value));
             orderedCenturies = dsu(options[category], floatCenturies)
-
+            console.log(options[category])
             $('.century-button').removeClass('active');
 
             orderedCenturies.forEach(new_option => {
                 if (new_option != "unknown"){
-                    $('.century-button').addClass('active');
-                    selector.append(`<button class="century-button" type='submit' value='${new_option}'>${new_option.slice(0, -2)}th</button>`)
+                    century_selector = `.century-button#${parseInt(new_option)}`
+                    console.log(century_selector);
+
+                    $(century_selector).addClass('active')
                 }
             })
         } else {
