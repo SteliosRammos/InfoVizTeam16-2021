@@ -18,10 +18,6 @@ var parameters = {
     creation_year: { begin: 1200, end: 1850 }
 }
 
-// function updateParameters(updated_parameters) { 
-//     parameters = updated_parameters
-// }
-
 var message = {
     'first_load': first_load, 
     'parameters': parameters
@@ -193,7 +189,7 @@ function update_options(options) {
             selector.append('<br>')
             options[category].forEach(new_option => {
                 selector.append(`<input type="radio" id="${new_option}" name="general_type" value="${new_option}">`);
-                selector.append(`<label for="${new_option}">${new_option}</label><br>`);
+                selector.append(`<label for="${new_option}">${new_option.charAt(0).toUpperCase() + new_option.slice(1)}</label><br>`);
             });
 
             // Update general type value based on radio selection
@@ -218,19 +214,16 @@ function update_options(options) {
             // order the centuries
             floatCenturies = options[category].map((value) => parseFloat(value));
             orderedCenturies = dsu(options[category], floatCenturies)
-            console.log(options[category])
             $('.century-button').removeClass('active');
 
             orderedCenturies.forEach(new_option => {
                 if (new_option != "unknown"){
                     century_selector = `.century-button#${parseInt(new_option)}`
-                    console.log(century_selector);
-
                     $(century_selector).addClass('active')
                 }
             })
         } else {
-
+            selector.children().remove();
             if (parameters[category] != '') {
                 default_option = $('#' + category + " > .default-option");
                 default_option.remove()
@@ -243,7 +236,7 @@ function update_options(options) {
                         selector.append(`<option class='default-option' value="">-Select an artwork type-</option>`)
                         break;
                     case 'school':
-                        selector.append(`<option class='default-option' value="">-Select a artwork school-</option>`)
+                        selector.append(`<option class='default-option' value="">-Select an artwork school-</option>`)
                         break;
                 }
             }
