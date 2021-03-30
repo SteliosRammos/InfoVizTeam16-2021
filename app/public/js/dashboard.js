@@ -111,6 +111,7 @@ function submitPreSelection(option) {
 function reset(option) {
     switch (option.id) {
         case 'reset-century':
+            $('.century-button').removeClass('selected')
             parameters["creation_year"] = $.extend({}, default_year_range)
             parameters["century"] = ''
             break;
