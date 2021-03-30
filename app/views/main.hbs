@@ -3,19 +3,27 @@
 <meta charset="utf-8">
 
 <!-- Range slider code -->
-<script src="static/js/histogram.js"></script>
 <script src="static/js/slider.js"></script>
 
 <!-- CSS stylsheets -->
+<link href="static/css/main.css" rel="stylesheet">
 <link href="static/css/slider.css" rel="stylesheet">
 <link href="static/css/histogram.css" rel="stylesheet">
 {{!-- <link href="static/css/selection_menu.css" rel="stylesheet"> --}}
-<h5>Date range</h5>
-<div id="range-label"></div>
-<div id="container"></div>
-<div class="container-fluid">
+<div class="container-fluid bg-dark">
     <div class="row">
-        <nav class="col-2 bg-dark"><br /><br />
+        <div class="card shadow" style="margin: 30px;">
+            <div class="card-head" style="margin-top: 10px; margin-bottom: -50px;">
+                <h5 class="card-title" >Date range</h5>
+                <div id="range-label"></div>
+            </div>
+            <div class="card-body">
+                <div id="container"></div>
+            </div>
+        </div>
+        </div>
+    <div class="row">
+        <nav class="col-2"><br /><br />
             <label>Century:</label>
             <div id="century"></div>
             <br>
@@ -55,15 +63,23 @@
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div id="cielab-view">
+                                <div class="row">
+                                    <div class="col-1"><span class="material-icons-outlined">help_outline</span></div>
+                                    <div class="col-10"><h4 class="card-title">CIELAB color space</h4></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <div id="barchart-view" class="barchart-view" style="width: 700px; height: 540px; overflow-y: scroll"></div>
-
+                            <div id="barchart-view">
+                                <div class="row">
+                                    <div class="col-1"><span class="material-icons-outlined">help_outline</span></div>
+                                    <div class="col-10"><h4 class="card-title">Artists by number of artworks</h4></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,14 +88,24 @@
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <div id="volume-view"></div>
+                            <div id="volume-view">
+                                <div class="row">
+                                    <div class="col-1"><span class="material-icons-outlined">help_outline</span></div>
+                                    <div class="col-10"><h4 class="card-title">Color frequency</h4></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <div id="graph-view"></div>
+                            <div id="graph-view">
+                                <div class="row">
+                                    <div class="col-1"><span class="material-icons-outlined">help_outline</span></div>
+                                    <div class="col-10"><h4 class="card-title">Distance graph</h4></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

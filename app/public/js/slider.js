@@ -155,7 +155,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         .range([histHeight - axisHeight, 0]);
 
     var svg = hist.append("svg")
-        .attr("width", 10000)
+        .attr("width", 1800)
         .attr("height", histHeight)
         .append("g");
 
@@ -514,5 +514,161 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         onTouchEnd: onTouchEnd,
         updateUIFromRange: updateUIFromRange,
         updateHist: updateHist
+    };
+}
+
+/**
+ * Create a d3 simple slider that selects one value between `rangeMin` and `rangeMax`, and add it to the
+ * `containerSelector`.
+ * The appearance can be changed with CSS, but the `position` must be `relative`, and the width of `.slider` should be
+ * left unaltered.
+ *
+ * @param rangeMin Minimum value of the range
+ * @param rangeMax Maximum value of the range
+ * @param containerSelector A CSS selection indicating exactly one element in the document
+ * @returns {{select: function(number), onChange: function(function)}}
+ */
+ function createD3SimpleSlider(rangeMin, rangeMax, containerSelector) {
+    "use strict";
+
+    var minWidth = 10;
+
+    var sliderPos = (rangeMax + rangeMin) / 2;
+    var changeListeners = [];
+    // var touchEndListeners = [];
+    var container = d3.select(containerSelector);
+    var containerHeight = container.node().offsetHeight;
+
+    var sliderBox = container.append("div")
+        .style("position", "relative")
+        .style("height", containerHeight + "px")
+        .style("min-width", (minWidth * 2) + "px")
+        .classed("slider-container", true);
+
+    //Create elements in container
+    var slider = sliderBox
+        .append("div")
+        .attr("class", "slider");
+
+    /** Update the `left` and `width` attributes of `slider` based on `sliderRange` */
+    function updateUIFromRange() {
+        var conW = sliderBox.node().clientWidth;
+        var uiWidth = Math.max(minWidth, conW / (rangeMax - rangeMin + 1));
+        var ratio = (sliderPos - rangeMin) / (rangeMax - rangeMin);
+        if (isNaN(ratio)) {
+            ratio = 0;
+        }
+        var uiLeft = ratio * (conW - uiWidth);
+
+        slider
+            .style("left", uiLeft + "px")
+            .style("width", uiWidth + "px");
+    }
+
+    /** Update the `sliderRange` based on the `left` and `width` attributes of `slider` */
+    function updateRangeFromUI() {
+        var uiLeft = parseFloat(slider.style("left"));
+        var uiWidth = parseFloat(slider.style("width"));
+        var conW = sliderBox.node().clientWidth; //parseFloat(container.style("width"));
+        var uislope = (rangeMax - rangeMin) / (conW - uiWidth);
+        var rangeL = rangeMin + uislope * uiLeft;
+        var newSliderPos = Math.round(rangeL);
+
+        if (newSliderPos != sliderPos) {
+            sliderPos = newSliderPos;
+            //Fire change listeners
+            changeListeners.forEach(function (callback) {
+                callback(sliderPos);
+            });
+        };
+    };
+
+
+    var dragMove = d3.drag()
+        .on("start", function () {
+            d3.event.sourceEvent.stopPropagation();
+        })
+        .on("end", function () {
+            updateUIFromRange();
+            // touchEndListeners.forEach(function (callback) {
+            //     callback(sliderPos);
+            // });
+        })
+        .on("drag", function () {
+            var dx = d3.event.dx;
+            var conWidth = sliderBox.node().clientWidth; //parseInt(container.style("width"));
+            var newLeft = parseInt(slider.style("left")) + dx;
+            var uiWidth = parseFloat(slider.style("width"));
+
+            newLeft = Math.max(newLeft, 0);
+            newLeft = Math.min(newLeft, conWidth - uiWidth);
+            slider.style("left", newLeft + "px");
+
+            updateRangeFromUI();
+        });
+
+    slider.call(dragMove);
+
+    //Reposition slider on window resize
+    window.addEventListener("resize", function () {
+        updateUIFromRange();
+    });
+
+    function onChange(callback) {
+        changeListeners.push(callback);
+        return this;
+    }
+
+    // function onTouchEnd(callback) {
+    //     touchEndListeners.push(callback);
+    //     return this;
+    // }
+
+    function setPos(pos) {
+        sliderPos = pos;
+
+        updateUIFromRange();
+
+        //Fire change listeners
+        changeListeners.forEach(function (callback) {
+            callback(sliderPos);
+        });
+    }
+
+
+    /**
+     * Returns or sets the range depending on arguments.
+     * If `pos` is a number then the selection is set to `pos`.
+     * If `pos` is undefined the currently set selection is returned.
+     * If `pos` causes the selection to be outside of the `rangeMin` and `rangeMax` specified on slider creation
+     * then a warning is printed and the range correspondingly clamped.
+     * @param pos the selection
+     * @returns {number}
+     */
+    function select(pos) {
+
+        if (typeof pos === "number") {
+
+            //Check that lower and upper range are within their bounds
+            if (pos < rangeMin || pos > rangeMax) {
+                console.log("Warning: trying to set selection " + pos + ") which is outside of bounds (" + rangeMin + "," + rangeMax + "). ");
+                pos = Math.max(pos, rangeMin);
+                pos = Math.min(pos, rangeMax);
+            }
+
+            //Set the selection
+            setPos(pos);
+        }
+
+        return sliderPos;
+    }
+
+    setPos(sliderPos);
+
+    return {
+        select: select,
+        onChange: onChange,
+        // onTouchEnd: onTouchEnd,
+        updateUIFromRange: updateUIFromRange
     };
 }
