@@ -1,8 +1,19 @@
-var barchart_width = 540;
-var barchart_height = 540;
-var barchart_margin = {top: 20, right: 20, bottom: 10, left: 200}
+var barchart_width = 480;
+var barchart_height = 500;
+var barchart_margin = {top: 40, right: 20, bottom: 10, left: 200}
+var barchart_globals = {
+    'nbars': 15,
+    'max_nbars': 15,
+    'data': null
+}
 
 function barchart_view() {
+    init_help();
+    const help_text = 'Artists by number of artworks: This barchart shows the top artists by the number of their artworks in the selection.';
+    d3.select(BARCHART).select('span')
+        .on('mouseover', () => { show_help(help_text); })
+        .on('mouseout', () => { hide_help(); });
+
     var svg = d3.select(BARCHART).append('svg')
         .attr("width", barchart_width)
         .attr("height", barchart_height)
@@ -17,9 +28,29 @@ function barchart_view() {
         .attr('class', 'yAxis')
         .attr("transform", `translate(${barchart_margin.left}, ${barchart_margin.top - 15})`)
         .style("font-size", "14px");
+    
+    var barchart_slider = d3.select(BARCHART).append('div').attr('id', 'barchart-slider');
+    var slider = createD3SimpleSlider(1, barchart_globals.max_nbars, "#barchart-slider");
+    slider.select(barchart_globals.nbars);
+    slider.onChange(function (newPos) {
+        d3.select("#barchart-slider-label").text(newPos + ' artist' + (newPos > 1 ? 's' : ''));
+        pos = slider.select();
+        // barchart_globals.nbars = 0;
+        // update_graph();
+        barchart_globals.nbars = pos;
+        update_barchart();
+    });
+    barchart_slider.append('div').attr('id', 'barchart-slider-label').text(barchart_globals.nbars + ' artists');
+
 };
 
-function update_barchart(data) {
+function update_barchart(data = null) {
+    if (data !== null) {
+        barchart_globals.data = data;
+    } else {
+        data = barchart_globals.data;
+    };
+
     if (typeof data.frequencies == "undefined") return;
 
     var margin = barchart_margin;
@@ -35,7 +66,7 @@ function update_barchart(data) {
 
     // Render top 10
     //   nbars = artists.length;
-    nbars = 10;
+    nbars = barchart_globals.nbars;
     top_n_artists = Object.keys(_.pick(artistfreq_data, ordered_artists.slice(Math.max(ordered_artists.length - nbars, 1)))).reverse()
 
     freqs = top_n_artists.reduce((freqs, artist) => {
@@ -60,7 +91,7 @@ function update_barchart(data) {
     var bars = svg.selectAll("path").data(freqs, (d) => { return d.artist });
     bars.exit().remove();
     bars.enter().append("path")
-        .attr("fill", "#168B98")
+        .attr("fill", "#698fda")
         .attr("d", (d, i) => roundedRect(
             scaleX(0),
             (i * spaced_barwidth) + margin.top,

@@ -13,10 +13,10 @@ var volume_globals = {
 };
 
 function volume_view() {
+
+    init_help();
     const help_text = 'Colors\' frequency: this graph shows the frequency of colors in your selection. Each cube represents a range of colors in the RGB space and is scaled according to the frequency of colors in that cube, relative to other cubes.';
-    d3.select(VOLUME).append('span')
-        .attr('class', "material-icons-outlined")
-        .text('help_outline')
+    d3.select(VOLUME).select('span')
         .on('mouseover', () => { show_help(help_text); })
         .on('mouseout', () => { hide_help(); });
 
@@ -106,7 +106,7 @@ function volume_view() {
     };
 };
 
-function update_volume(data, tt = 1000) {
+function update_volume(data, tt = 0) {
     var minCubeSize = 0.1;
 
     if (data !== null) {

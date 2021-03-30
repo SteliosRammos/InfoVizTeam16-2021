@@ -31,10 +31,7 @@ function cielab_view() {
 
     init_help();
     const help_text = 'Selection’s colors: this graph shows the dominant colors of the artworks in your selection. Each dot represents a different color, which appears as some artwork\'s dominant color in your selection.';
-
-    var help_button = d3.select(CIELAB).append('span')
-        .attr('class', "material-icons-outlined")
-        .text('help_outline')
+    d3.select(CIELAB).select('span')
         .on('mouseover', () => { show_help(help_text); })
         .on('mouseout', () => { hide_help(); });
 

@@ -11,12 +11,9 @@ function graph_view() {
 
     init_help();
     const help_text = 'Distance from average: after selecting a cube in the RGB space, this graph will show the average color in that cube and the 10 closest artworks to that average';
-
-    var help_button = d3.select(GRAPH).append('span')
-    .attr('class', "material-icons-outlined")
-    .text('help_outline')
-    .on('mouseover', () => { show_help(help_text); })
-    .on('mouseout', () => { hide_help(); });
+    d3.select(GRAPH).select('span')
+        .on('mouseover', () => { show_help(help_text); })
+        .on('mouseout', () => { hide_help(); });
 
     var svg = d3.select(GRAPH).append('svg')
         .attr('width', graph_width)

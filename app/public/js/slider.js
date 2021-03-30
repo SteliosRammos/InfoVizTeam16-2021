@@ -155,7 +155,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         .range([histHeight - axisHeight, 0]);
 
     var svg = hist.append("svg")
-        .attr("width", 10000)
+        .attr("width", 1800)
         .attr("height", histHeight)
         .append("g");
 
