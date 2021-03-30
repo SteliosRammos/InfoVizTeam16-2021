@@ -10,7 +10,7 @@ label {
     color: aliceblue;
 }
 
-button {
+button:not(.individual-reset-button) {
     display:inline-block;
     padding:0.46em 1.6em;
     border:0.1em solid #000000;
@@ -34,4 +34,14 @@ button.selected, button:hover {
 
 .century-button:not(.active) {
     opacity: 0.5;
+}
+
+button.individual-reset-button {
+    background-color: transparent;
+    color: aliceblue;
+    border-color: aliceblue;
+    text-align:right;
+    padding:0;
+    border: 01em;
+    /* opacity: 0.8; */
 }

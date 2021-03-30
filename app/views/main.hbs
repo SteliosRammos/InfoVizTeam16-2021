@@ -58,6 +58,9 @@
                                 <button class="century-button active" id="19" type='submit' value='19.0'>19th</button>
                                 <button class="century-button active" id="20" type='submit' value='20.0'>20th</button>
                                 <button class="century-button active" id="21" type='submit' value='21.0'>21st</button>
+                                <button class="individual-reset-button" id="reset-century" onclick="reset(this)">
+                                    <span class="material-icons-outlined">restart_alt</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -71,6 +74,9 @@
                         <div class="row">
                             <select id='artist_nationality' name="artist_nationality" onchange="submitSelected(this)" style="text-align: center;">
                             </select>
+                            <button class="individual-reset-button" id="reset-artist-nationality" onclick="reset(this)">
+                                <span class="material-icons-outlined">restart_alt</span>
+                    </button>
                         </div>
                     </div>
                 </div>
@@ -83,6 +89,9 @@
                         <div class="row">
                             <select id='artwork_type' name="artwork_type" onchange="submitSelected(this)">
                             </select>
+                            <button class="individual-reset-button" id="reset-artwork-type" onclick="reset(this)">
+                                <span class="material-icons-outlined">restart_alt</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -95,18 +104,25 @@
                         <div class="row">
                             <select id='school' name="school" onchange="submitSelected(this)">
                             </select>
+                            <button class="individual-reset-button" id="reset-school" onclick="reset(this)">
+                                <span class="material-icons-outlined">restart_alt</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mb-3 pb-2 border-bottom">
+                    
                     <form id="general_type" name="radioSelect">
-                        <label>General Type:</label>
+                        <label>General Type:</label>    
                     </form>
+                    <button class="individual-reset-button" id="reset-general-type" onclick="reset(this)">
+                                <span class="material-icons-outlined">restart_alt</span>
+                    </button>
                 </div>
                 
                 <div class="row mb-3">
-                    <button onclick="resetOptions()">Reset Options</button>
+                    <button onclick="resetAllOptions()">Reset All Options</button>
                 </div>
             </div>
         </nav>

@@ -108,7 +108,29 @@ function submitPreSelection(option) {
     sendWebSocketMessage()
 }
 
-function resetOptions() {
+function reset(option) {
+    switch (option.id) {
+        case 'reset-century':
+            parameters["century"] = ''
+            break;
+        case  'reset-school':
+            parameters["school"] = ''
+            break;
+        case 'reset-artwork-type':
+            parameters["artwork_type"] = ''
+            break;
+        case 'reset-general-type':
+            parameters["general_type"]= ''
+            break;
+        case 'reset-artist-nationality':
+            parameters["artist_nationality"] = ''
+            break;
+    }
+
+    sendWebSocketMessage()
+}
+
+function resetAllOptions() {
     parameters["century"] = ''
     parameters["artist_nationality"] = ''
     parameters["artwork_type"] = ''
