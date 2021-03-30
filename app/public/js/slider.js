@@ -20,8 +20,12 @@
  * @param containerSelector A CSS selection indicating exactly one element in the document
  * @returns {{range: function(number, number), onChange: function(function)}}
  */
-function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) {
+function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, histValues) {
     "use strict";
+
+    var containerHeight = 150;
+    var histHeight = 100;
+    var axisHeight = 20;
 
     var minWidth = 10;
 
@@ -29,10 +33,15 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
     var changeListeners = [];
     var touchEndListeners = [];
     var container = d3.select(containerSelector);
+    container.attr('height', containerHeight + 'px');
     var playing = false;
     var resumePlaying = false; // Used by drag-events to resume playing on release
     var playingRate = 100;
-    var containerHeight = container.node().offsetHeight;
+
+    var hist = container
+        .append("div")
+        .attr("height", histHeight + "px")
+        .attr("class", "hist");
 
     // Set up play button if requested
     if (playButton) {
@@ -108,7 +117,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
     } else {
         var sliderBox = container.append("div")
             .style("position", "relative")
-            .style("height", containerHeight + "px")
+            .style("height", containerHeight - histHeight + "px")
             .style("min-width", (minWidth * 2) + "px")
             .classed("slider-container", true);
     }
@@ -119,6 +128,99 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
         .attr("class", "slider");
     var handleW = slider.append("div").attr("class", "handle WW");
     var handleE = slider.append("div").attr("class", "handle EE");
+
+    var histColor = "darkgrey";
+
+    var bins = 120;
+    var width = sliderBox.node().clientWidth;
+    hist.attr('width', width + 'px')
+
+    var x = d3.scaleLinear()
+        .domain([rangeMin, rangeMax])
+        .range([0, width]);// - width / bins]);
+
+    // Generate a histogram using twenty uniformly-spaced bins.
+    var data = d3.histogram()
+        .thresholds(x.ticks(bins))
+        (histValues);
+
+    var yMax = d3.max(data, function (d) { return d.length });
+    var yMin = d3.min(data, function (d) { return d.length });
+    var colorScale = d3.scaleLinear()
+        .domain([yMin, yMax])
+        .range([d3.rgb(histColor).brighter(), d3.rgb(histColor).darker()]);
+
+    var y = d3.scaleLinear()
+        .domain([0, yMax])
+        .range([histHeight - axisHeight, 0]);
+
+    var svg = hist.append("svg")
+        .attr("width", 10000)
+        .attr("height", histHeight)
+        .append("g");
+
+    var bar = svg.selectAll(".bar")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "bar")
+        .attr("transform", function (d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; });
+
+    bar.append("rect")
+        .attr("x", 1)
+        .attr("width", (x(data[0].x1 - data[0].x0) - x(0)) - 1)
+        .attr("height", function (d) { return histHeight - axisHeight - y(d.length); })
+        .attr("fill", function (d) { return colorScale(d.length) });
+
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (histHeight - axisHeight) + ")")
+        .call(d3.axisBottom(x));
+    svg.select('.axis .tick text').attr('transform', 'translate(10, 0)')
+
+    /*
+    * Adding refresh method to reload new data
+    */
+    function updateHist(newValues, tt) {
+        var width = sliderBox.node().clientWidth;
+        hist.attr('width', width + 'px')
+
+        var x = d3.scaleLinear()
+            .domain([rangeMin, rangeMax])
+            .range([0, width]);// - width / bins]);
+    
+        var data = d3.histogram()
+            .thresholds(x.ticks(bins))
+            (newValues);
+
+        // Reset y domain using new data
+        var yMax = d3.max(data, function (d) { return d.length });
+        var yMin = d3.min(data, function (d) { return d.length });
+        y.domain([0, yMax]);
+        var colorScale = d3.scaleLinear()
+            .domain([yMin, yMax])
+            .range([d3.rgb(histColor).brighter(), d3.rgb(histColor).darker()]);
+
+        var bar = svg.selectAll(".bar").data(data);
+
+        // Remove object with data
+        bar.exit().remove();
+
+        bar.transition()
+            .duration(tt)
+            .attr("transform", function (d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; });
+
+        bar.select("rect")
+            .transition()
+            .duration(tt)
+            .attr("width", (x(data[0].x1 - data[0].x0) - x(0)) - 1)
+            .attr("height", function (d) { return histHeight - axisHeight - y(d.length); })
+            .attr("fill", function (d) { return colorScale(d.length) });
+
+        svg.select('.axis').selectAll('*').remove();
+        svg.select('.axis').call(d3.axisBottom(x));
+        svg.select('.axis .tick text').attr('transform', 'translate(10, 0)')
+
+    }
 
     /** Update the `left` and `width` attributes of `slider` based on `sliderRange` */
     function updateUIFromRange() {
@@ -270,6 +372,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
     //Reposition slider on window resize
     window.addEventListener("resize", function () {
         updateUIFromRange();
+        updateHist(values, 0);
     });
 
     // function onChange(callback) {
@@ -401,6 +504,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
     }
 
     setRange(sliderRange.begin, sliderRange.end);
+    updateHist(values, 0);
 
     return {
         range: range,
@@ -408,6 +512,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton) 
         stopPlaying: stopPlaying,
         // onChange: onChange,
         onTouchEnd: onTouchEnd,
-        updateUIFromRange: updateUIFromRange
+        updateUIFromRange: updateUIFromRange,
+        updateHist: updateHist
     };
 }
