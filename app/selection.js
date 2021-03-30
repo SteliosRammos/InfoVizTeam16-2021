@@ -35,11 +35,12 @@ function get_reduced_options(parameters) {
 
         append = (key == 'creation_year') ? key + " BETWEEN " + value['begin'] + " AND " + value['end']: key + " = '" + value + "'";
 
-        where_clause += where_clause.length == 0 ? "WHERE " + append : " AND " + append;
+        where_clause += where_clause.length == 0 ? "WHERE " + key + " != 'unknown' AND " + append : " AND " + append;
 
         return where_clause
     }, '')
 
+    console.log('WHERE clause:' ,where_clause)
     var options = {
         "century": [],
         "artist_nationality": [],

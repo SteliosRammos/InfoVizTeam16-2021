@@ -1,28 +1,14 @@
 
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
-    body {
-        font: 15px sans-serif;
-    }
-
-    .bar text {
-        fill: #999999;
-    }
-
-    .axis path,
-    .axis line {
-        fill: none;
-        stroke: rgb(70, 70, 70);
-        shape-rendering: crispEdges;
-    }
-</style>
 
 <!-- Range slider code -->
+<script src="static/js/histogram.js"></script>
 <script src="static/js/slider.js"></script>
 
 <!-- CSS stylsheets -->
 <link href="static/css/slider.css" rel="stylesheet">
+<link href="static/css/histogram.css" rel="stylesheet">
 {{!-- <link href="static/css/selection_menu.css" rel="stylesheet"> --}}
 <h5>Date range</h5>
 <div id="range-label"></div>
@@ -31,53 +17,25 @@
     <div class="row">
         <nav class="col-2 bg-dark"><br /><br />
             <label>Century:</label>
-            <button type='submit' value='14' onclick="submitSelected()">14th</button>
-            <button type='submit' value='15' onclick="submitSelected()">15th</button>
-            <button type='submit' value='16' onclick="submitSelected()">16th</button>
-            <button type='submit' value='17' onclick="submitSelected()">17th</button>
-            <button type='submit' value='18' onclick="submitSelected()">18th</button>
-            <button type='submit' value='19' onclick="submitSelected()">19th</button> 
-            <button type='submit' value='20' onclick="submitSelected()">20th</button>
-            <button type='submit' value='21' onclick="submitSelected()">21st</button> 
-            <br /><br />
+            <div id="century"></div>
+            <br>
 
             <label>Country:</label>
-            <select id='artist_nationality' , name="artist_nationality" , onchange="submitSelected()">
+            <select id='artist_nationality' name="artist_nationality" onchange="submitSelected()">
                 <option value="">-Select a country-</option>
-                <option value="Armenia">Armenia</option>
-                <option value="Australia">Australia</option>
-                <option value="Belgium">Belgium</option>
-                <option value="Canada">Canada</option>
-                <option value="Denmark">Denmark</option>
-                <option value="France">France</option>
-                <option value="Germany">Germany</option>
-                <option value="Greece">Greece</option>
-                <option value="Hungary">Hungary</option>
-                <option value="Italy">Italy</option>
-                <option value="Japan">Japan</option>
-                <option value="Netherlands">Netherlands</option>
-                <option value="Norway">Norway</option>
-                <option value="Poland">Poland</option>
-                <option value="Romania">Romania</option>
-                <option value="Russia">Russia</option>
-                <option value="Spain">Spain</option>
-                <option value="Sweden">Sweden</option>
-                <option value="Switzerland">Switzerland</option>
-                <option value="Ukraine">Ukraine</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="United States">United States</option>
-            <br /><br />
+            <br>
 
             <label>Artwork Type:</label>
-            <select id='artwork_type' , name="artwork_type" , onchange="submitSelected()">
+            <select id='artwork_type' name="artwork_type" onchange="submitSelected()">
                 <option value="">-Select an artwork type-</option>
-            </select><br /><br />
+            </select>
+            <br>
 
             <label>School:</label>
-            <select id='school' , name="school" , onchange="submitSelected()">
+            <select id='school' name="school" onchange="submitSelected()">
                 <option value="">-Select a artwork school-</option>
-                <option value=unknown>Unknown</option>
-            </select><br /><br />
+            </select>
+            <br>
 
             <form id="general_type" name="radioSelect">
                 <label>General Type:</label><br>

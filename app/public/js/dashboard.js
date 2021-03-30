@@ -20,13 +20,33 @@ var message = {
 
 var options;
 
+// SORTING UTILITY
+const dsu = (arr1, arr2) => arr1
+    .map((item, index) => [arr2[index], item]) // add the args to sort by
+    .sort(([arg1], [arg2]) => arg1 - arg2) // sort by the args
+    .map(([, item]) => item); // extract the sorted items
+
+// BUTTON FUNCTIONALITIES
+
+// Give radio-like behavior to button
+$(document).on('click', '.century-button', function() {
+    //Remove active class from all buttons
+    $('.century-button').removeClass('active');
+
+    //Add active class to the clicked button
+    $(this).addClass('active');
+    parameters["century"] = $(this)[0].value
+
+    console.log('Century selected: ', $(this)[0].value)
+    console.log('param century: ', parameters["century"])
+
+    submitSelected()
+ });
+
 function submitSelected() {
     console.log('Submitting selection')
-
-    var century = document.getElementById('century').value
-    parameters["century"] = century
-    parameters["creation_year"]["begin"] = (century * 100) - 100
-    parameters["creation_year"]["end"] = (century * 100) - 1
+    parameters["creation_year"]["begin"] = (parameters["century"] * 100) - 100
+    parameters["creation_year"]["end"] = (parameters["century"] * 100) - 1
     parameters["artist_nationality"]= document.getElementById('artist_nationality').value
     parameters["artwork_type"]= document.getElementById('artwork_type').value
     parameters["school"]= document.getElementById('school').value
@@ -96,6 +116,8 @@ function resetOptions() {
     ws.send(JSON.stringify(message))
 }
 
+
+// Data loading
 window.onload = () => {
     // Initialize the views
     cielab_view();
@@ -180,9 +202,23 @@ function update_options(options) {
                     });
                 }
             }
+        } else if (category == "century") {
+            console.log(options[category])
+            // order the centuries
+            floatCenturies = options[category].map((value) => parseFloat(value));
+            orderedCenturies = dsu(options[category], floatCenturies)
+
+            console.log(orderedCenturies)
+
+            orderedCenturies.forEach(new_option => {
+                if (new_option != "unknown"){
+                    selector.append(`<button class="century-button" type='submit' value='${new_option}'>${new_option.slice(0, -2)}th</button>`)
+                }
+            })
         } else {
+            if (category == "artwork_type") console.log(options[category]);
             options[category].forEach(new_option => {
-            selector.append(new Option(new_option, new_option));
+                selector.append(new Option(new_option, new_option));
         });
         }
     };

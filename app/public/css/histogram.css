@@ -1,0 +1,14 @@
+body {
+    font: 15px sans-serif;
+}
+
+.bar text {
+    fill: #999999;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: rgb(70, 70, 70);
+    shape-rendering: crispEdges;
+}
