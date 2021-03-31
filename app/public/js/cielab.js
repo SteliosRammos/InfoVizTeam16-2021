@@ -1,5 +1,5 @@
 var cielab_width = 720;
-var cielab_height = 540;
+var cielab_height = 580;
 var cielab_globals = {
     'pointData': [],
     'xAxis': { // a*
@@ -198,7 +198,7 @@ function cielab_view() {
 
 function update_cielab(data, tt = 0) {
     if (data !== null) {
-        cielab_globals.pointData = d3.values(data.cielab)
+        cielab_globals.pointData = d3.values(data.cielab);
     }
 
     var point3d = d3._3d()

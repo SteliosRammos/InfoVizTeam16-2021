@@ -7,7 +7,7 @@ var CIELAB = '#cielab-view',
 
 var first_load = true; 
 var slider_trigger = false; // true when graph update is triggered by slider
-const default_year_range = { begin: 1200, end: 1850 }
+const default_year_range = { begin: 1200, end: 2021 }
 
 var parameters = {
     artist_nationality: '',
@@ -234,7 +234,7 @@ function update_options(options) {
             selector.append('<br>')
             options[category].forEach(new_option => {
                 selector.append(`<input type="radio" id="${new_option}" name="general_type" value="${new_option}">`);
-                selector.append(`<label for="${new_option}">${new_option.charAt(0).toUpperCase() + new_option.slice(1)}</label><br>`);
+                selector.append(`<label for="${new_option}" style="padding-left: 0.3em;">${new_option.charAt(0).toUpperCase() + new_option.slice(1)}</label><br>`);
             });
 
             // Update general type value based on radio selection

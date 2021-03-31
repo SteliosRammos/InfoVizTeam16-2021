@@ -5,7 +5,7 @@ var volume_globals = {
     'show_grid': true,
     'cubeData': [],
     'origin': [volume_width / 2, volume_height / 2],
-    'scale': 60,
+    'scale': 70,
     'alpha': 0,
     'beta': 0,
     'startAngle': Math.PI / 4,

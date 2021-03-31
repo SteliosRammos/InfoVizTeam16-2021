@@ -49,7 +49,7 @@ function to_graph_data(results) {
     Object.entries(results).forEach(([key, r]) => {
 
         let clab = r.dominant_color_lab.replace(/\[|\]/gi, '').split(',').map(e => parseFloat(e))
-        let cielab_key = clab.map(n => modulo.apply(null, [n, 3])).join('_')
+        let cielab_key = clab.map(n => modulo.apply(null, [n, 5])).join('_')
         
         if (!cielab_reduced.hasOwnProperty(cielab_key)) {
             cielab_reduced[cielab_key] = {

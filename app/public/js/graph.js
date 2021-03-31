@@ -1,5 +1,5 @@
-var graph_width = 480;
-var graph_height = 480;
+var graph_width = 600;
+var graph_height = 440;
 var graph_globals = {
     'node_data': [],
     'link_data': [],
@@ -109,7 +109,7 @@ function update_graph(data = null) {
         .merge(link_text);
 
     var sim = d3.forceSimulation(node_data)
-        .force('charge', d3.forceManyBody().strength(function (d, i) { return i == 0 ? -graph_width : 0; }))
+        .force('charge', d3.forceManyBody().strength(function (d, i) { return i == 0 ? -graph_height : 0; }))
         .force('center', d3.forceCenter(graph_width / 2, graph_height / 2))
         .on('tick', () => {
             lte.attr('x', (d) => { return ((d.source.x + d.target.x) / 2); })
@@ -127,7 +127,7 @@ function update_graph(data = null) {
     sim.nodes(node_data)
         .force('link', d3.forceLink()
             .id((d) => { return d.id; })
-            .distance(function (d) { return d.distance * graph_width / 2.5; })
+            .distance(function (d) { return d.distance * graph_height / 2.5; })
             .links(link_data));
 };
 

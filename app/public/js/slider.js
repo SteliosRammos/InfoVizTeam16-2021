@@ -23,8 +23,8 @@
 function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, histValues) {
     "use strict";
 
-    var containerHeight = 150;
-    var histHeight = 100;
+    var containerHeight = 200;
+    var histHeight = 150;
     var axisHeight = 20;
 
     var minWidth = 10;
@@ -155,7 +155,7 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         .range([histHeight - axisHeight, 0]);
 
     var svg = hist.append("svg")
-        .attr("width", 1500)
+        .attr("width", 1200)
         .attr("height", histHeight)
         .append("g");
 
@@ -239,6 +239,8 @@ function createD3RangeSlider(rangeMin, rangeMax, containerSelector, playButton, 
         slider
             .style("left", uirangeL + "px")
             .style("width", uirangeW + "px");
+        
+        d3.select("#range-label").html(sliderRange.begin + " &mdash; " + sliderRange.end);
     }
 
     /** Update the `sliderRange` based on the `left` and `width` attributes of `slider` */

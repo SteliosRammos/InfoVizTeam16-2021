@@ -8,6 +8,7 @@ body {
 
 label {
     color: aliceblue;
+    font-size: 18px;
 }
 
 button:not(.individual-reset-button) {
@@ -44,4 +45,12 @@ button.individual-reset-button {
     padding:0;
     border: 01em;
     /* opacity: 0.8; */
+}
+
+#pre-selected-options button {
+    padding:0.1em 1.6em;
+}
+
+#pre-selected-options label {
+    font-size: 16px;
 }
